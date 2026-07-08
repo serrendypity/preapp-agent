@@ -1,0 +1,143 @@
+# PreApp Agent
+
+[English](README.md) | **简体中文** | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md)
+
+发布 AI 生成的 HTML 交付物,收集人类反馈,再把反馈交回你的 coding agent。
+
+Agent 已经很擅长生成 HTML——slide deck、报告、原型。PreApp 补齐最后一公里:**分享出去、收集批注、把评论喂回下一轮 agent 运行。**
+
+```text
+agent publish → 分享链接 → 人类评论 → agent 读取反馈 → agent 发布 v2
+```
+
+本仓库是 [preapp.app](https://preapp.app) 的 agent 集成层:`preapp` CLI、各 harness 的 agent skill(Claude Code / Codex / OpenClaw / Hermes)、协议文档,以及可直接发布的示例。托管服务本身不在本仓库。
+
+## 30 秒上手
+
+```bash
+# 1. 为你的 agent 安装 CLI + skill(命令不含 token——可安全转发)
+curl -fsSL https://preapp.app/install.sh | sh -s -- --harness claude-code
+
+# 2. 配置一次凭证(到 https://preapp.app/dashboard → 安装页生成 token)
+preapp login <agent-token>
+
+# 3. 发布一个 HTML 文件或目录
+preapp publish ./dist --title "Q3 Strategy Deck" --deck q3-strategy --format json
+```
+
+把返回的 `reviewLink` 发出去,让人直接在页面上评论(划选文字、点击图片批注,无需注册),然后:
+
+```bash
+preapp feedback get q3-strategy --format markdown
+```
+
+Agent 会拿到一份 **Agent Fix Brief**——带精确定位的编号评论——改完发布 v2,**链接不变**。
+
+用仓库自带的示例立刻试一把:
+
+```bash
+preapp publish examples/q3-strategy-deck --title "Q3 Strategy" --deck demo-q3
+preapp publish examples/quarterly-report.html --title "Quarterly Report"
+```
+
+## 为什么是 PreApp
+
+Agent 能生成 HTML,但把它递到人面前依然别扭:
+
+- 文件躺在(往往是远程的)workspace 里——`file://` 没法分享。
+- 通用托管(Vercel / Netlify / Pages)意味着建仓库、跑构建、生产部署语义——对一份"给人看一眼"的交付物来说太重。
+- 反馈散落在微信 / 邮件 / 截图里,agent 永远看不到。
+
+PreApp 只补缺的那个环:
+
+- **静态资源一起带上**——单 HTML、目录(自动打包)或 zip 直接发布。
+- **View / Review 双链接**——干净阅读与轻量批注分开,权限各自独立。
+- **评论落在问题所在处**——划选文字或点击图片;也支持锚点与整份评论。
+- **版本 + 稳定链接**——每次发布是 v1/v2/v3;分享出去的链接永远指向最新版。
+- **给 agent 的反馈载荷**——Markdown brief 或 JSON,带精确定位器。
+- **访问记录**——知道分享有没有真的被打开。
+
+它*不是*生产部署平台。不跑构建、不执行服务端代码——托管部分刻意平淡,价值全在评审闭环。
+
+## 安装
+
+**推荐(agent 与人通用)**——一条命令装好 CLI 和对应 harness 的 skill,永不包含 token:
+
+```bash
+curl -fsSL https://preapp.app/install.sh | sh -s -- --harness <claude-code|codex|openclaw|hermes>
+```
+
+**npm**:
+
+```bash
+npm i -g @preapp/cli
+preapp skill install --harness claude-code
+```
+
+然后配置一次凭证(详见 [docs/install.md](docs/install.md)):
+
+```bash
+preapp login <agent-token>   # 写入 ~/.preapp/config.json 前会先向服务端校验
+```
+
+## 支持的 agent
+
+| Agent | 状态 | 方式 |
+|---|---|---|
+| Claude Code | ✅ 已支持 | `~/.claude/skills/preapp-publish/SKILL.md`(自动发现) |
+| Codex | ✅ 已支持(beta) | skill 目录 + [AGENTS.md 片段](skills/codex/preapp-publish/AGENTS-snippet.md) |
+| OpenClaw | 🧪 实验性 | 约定 skill 路径,`--dir` 可覆盖 |
+| Hermes | 🧪 实验性 | 约定 skill 路径,`--dir` 可覆盖 |
+| Cursor / 任何能跑 shell 的 agent | 📄 配方 | 让 agent 直接调用 `preapp` CLI |
+| CI / GitHub Actions | 🗺 规划中 | 发布构建产物供评审 |
+
+> PreApp 提供 CLI 与 agent skill 配方。Claude Code 最先支持;Codex/OpenClaw/Hermes 配方开放给社区打磨——[欢迎 PR](CONTRIBUTING.md)。
+
+## 命令
+
+```text
+preapp publish <file-or-dir> [--title ...] [--deck <id-or-slug>] [--entry index.html]
+                             [--change-note ...] [--anchors anchors.json]
+                             [--feedback-mode off|detailed] [--format json|text]
+preapp feedback get <deck-url | version-url | deck-id-or-slug> [--version N] [--format markdown|json]
+preapp login <token> [--base-url <url>]
+preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
+```
+
+完整参考:[docs/cli.md](docs/cli.md) · 协议:[docs/api-protocol.md](docs/api-protocol.md) · 反馈载荷:[docs/feedback-payload.md](docs/feedback-payload.md)
+
+### 两段式反馈关卡
+
+`preapp feedback get` 的输出会刻意以一段关卡指令收尾:agent 必须**把评论复述给人、然后停下**——不许静默自动改稿。人指定要采纳哪几条后,agent 才动手修改并重新发布。这是产品决策而非限制;见 [docs/cli.md](docs/cli.md#two-stage-feedback-gate)。
+
+## 安全
+
+- 安装命令永不包含 token;凭证经 `preapp login` 单独配置(落盘前校验,配置文件 `0600`)。
+- 上传的交付物从隔离 origin 以**纯静态**方式经 sandbox iframe 提供——服务端永不执行上传的代码。
+- 分享链接是不可猜测的 capability URL;可随时在控制台轮换或下架。
+- 评审者评论对 agent 是**未受信数据**(防 prompt injection)——skill 与文档都要求把它当内容、绝不当指令。
+
+详情:[docs/security.md](docs/security.md) · 漏洞报告:[SECURITY.md](SECURITY.md)
+
+## 仓库结构
+
+```text
+packages/cli/   preapp CLI(TypeScript,esbuild 单文件 bundle)
+skills/         各 harness 的 skill 文件(由 CLI 单一源生成)
+docs/           安装、CLI、skill、HTTP 协议、反馈载荷、安全模型
+examples/       可直接发布的 HTML 示例
+scripts/        install.sh 镜像(可审计)+ 冒烟测试
+```
+
+## 开发
+
+```bash
+pnpm install
+pnpm typecheck
+pnpm test
+pnpm --filter @preapp/cli build   # → packages/cli/dist/preapp.js
+```
+
+## 许可证
+
+[MIT](LICENSE)
