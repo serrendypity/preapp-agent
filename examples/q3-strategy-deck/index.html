@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q3 Growth Strategy — Example Deck</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main id="deck">
+
+  <section class="slide" data-active>
+    <img class="logo" src="assets/logo.svg" alt="Acme logo" width="56" height="56">
+    <p class="kicker">Growth Strategy · Q3 2026</p>
+    <h1>Southeast Asia Market Expansion</h1>
+    <p class="sub">$4.2B TAM · +34% YoY category growth · draft v1 for review</p>
+    <p class="hint">Use ← → arrow keys or click to navigate · 1 / 4</p>
+  </section>
+
+  <section class="slide">
+    <p class="kicker">Where the demand is</p>
+    <h2>Three markets, one playbook</h2>
+    <ul>
+      <li><b>Indonesia</b> — largest TAM, mobile-first, price sensitive. Entry via marketplace partnerships.</li>
+      <li><b>Vietnam</b> — fastest category growth (+41% YoY). Entry via local reseller program.</li>
+      <li><b>Philippines</b> — English-first support costs lowest. Entry via direct self-serve.</li>
+    </ul>
+    <p class="note">Deprioritized: Thailand (regulatory review pending), Malaysia (crowded mid-market).</p>
+    <p class="hint">2 / 4</p>
+  </section>
+
+  <section class="slide">
+    <p class="kicker">The plan</p>
+    <h2>Q3 execution in three tracks</h2>
+    <ol>
+      <li><b>Localize checkout</b> — local payment rails in ID/VN by week 6; this alone unblocks ~60% of drop-off.</li>
+      <li><b>Partner motion</b> — sign 2 marketplace partners and 5 resellers; partner-led deals get a 12% margin.</li>
+      <li><b>Pricing test</b> — regional price fences at 0.6× US list, measured against contribution margin, not volume.</li>
+    </ol>
+    <p class="hint">3 / 4</p>
+  </section>
+
+  <section class="slide">
+    <p class="kicker">What success looks like</p>
+    <h2>Milestones &amp; asks</h2>
+    <ul>
+      <li>Week 6 — local payments live, first partner signed.</li>
+      <li>Week 10 — $120k regional MRR run-rate, CAC payback &lt; 9 months.</li>
+      <li>Week 13 — go/no-go review for 2× budget in Q4.</li>
+    </ul>
+    <p><b>Asks:</b> one payments engineer for 4 weeks · $80k partner enablement budget · legal review for ID entity.</p>
+    <p class="hint">4 / 4 · end</p>
+  </section>
+
+</main>
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var i = 0;
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, j) {
+      if (j === i) s.setAttribute("data-active", "");
+      else s.removeAttribute("data-active");
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") show(i + 1);
+    if (e.key === "ArrowLeft" || e.key === "PageUp") show(i - 1);
+  });
+  document.addEventListener("click", function (e) {
+    // click right half = next, left half = previous
+    if (window.getSelection && String(window.getSelection())) return; // don't fight text selection
+    show(e.clientX > window.innerWidth / 2 ? i + 1 : i - 1);
+  });
+})();
+</script>
+</body>
+</html>

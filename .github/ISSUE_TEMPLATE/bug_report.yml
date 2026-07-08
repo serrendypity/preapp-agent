@@ -1,0 +1,66 @@
+name: Bug report
+description: Something in the CLI, skill, or install flow doesn't work.
+labels: ["bug"]
+body:
+  - type: input
+    id: cli-version
+    attributes:
+      label: CLI version
+      description: Output of `preapp --version`
+      placeholder: preapp 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      description: Output of `node --version`
+      placeholder: v22.x
+    validations:
+      required: true
+  - type: input
+    id: os-shell
+    attributes:
+      label: OS / shell
+      placeholder: macOS 15 / zsh · Ubuntu 24.04 / bash · Windows 11 / WSL2
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Exact command you ran
+      description: Redact your token if it appears anywhere.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: stderr
+    attributes:
+      label: Output / stderr
+      render: shell
+    validations:
+      required: true
+  - type: dropdown
+    id: artifact-type
+    attributes:
+      label: Artifact type
+      options:
+        - single HTML file
+        - directory
+        - zip
+        - not artifact-related
+    validations:
+      required: true
+  - type: dropdown
+    id: has-assets
+    attributes:
+      label: Does the artifact include images/assets?
+      options:
+        - "yes"
+        - "no"
+        - not artifact-related
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction artifact
+      description: If you can, paste a minimal HTML (or describe the directory layout) that reproduces the problem.

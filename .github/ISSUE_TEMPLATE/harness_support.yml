@@ -1,0 +1,38 @@
+name: Harness path correction
+description: You use Codex / OpenClaw / Hermes and know the real skill discovery path or mechanism.
+labels: ["harness"]
+body:
+  - type: dropdown
+    id: harness
+    attributes:
+      label: Which harness?
+      options:
+        - Codex
+        - OpenClaw
+        - Hermes
+        - other (name it below)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Harness version
+      placeholder: output of its --version, if any
+  - type: textarea
+    id: actual-path
+    attributes:
+      label: Where do skills/rules actually get discovered?
+      description: The path or mechanism that worked for you (e.g. "~/.codex/skills is ignored; AGENTS.md at project root works").
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: How did you verify it?
+      description: Docs link, source link, or what you observed.
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Contribution
+      options:
+        - label: I'm willing to open a PR updating the skill recipe for this harness.
