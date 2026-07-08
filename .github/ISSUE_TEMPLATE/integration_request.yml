@@ -1,0 +1,56 @@
+name: Agent integration request
+description: You want PreApp to work with an agent / harness we don't support yet.
+labels: ["harness", "integration-request"]
+body:
+  - type: input
+    id: harness
+    attributes:
+      label: Agent / harness name
+      placeholder: e.g. Aider, Goose, Windsurf…
+    validations:
+      required: true
+  - type: dropdown
+    id: mechanism
+    attributes:
+      label: How should the integration work?
+      options:
+        - skill / rules file it auto-discovers
+        - MCP server
+        - plugin
+        - just a CLI recipe in docs
+        - not sure
+    validations:
+      required: true
+  - type: input
+    id: config-dir
+    attributes:
+      label: Default config/skill directory
+      placeholder: e.g. ~/.aider/… (if known)
+  - type: textarea
+    id: install
+    attributes:
+      label: How are extensions installed for this agent?
+      description: Link to docs if they exist.
+  - type: dropdown
+    id: shell
+    attributes:
+      label: Can this agent run shell commands?
+      options:
+        - "yes"
+        - "no"
+        - sandboxed / restricted
+    validations:
+      required: true
+  - type: dropdown
+    id: files
+    attributes:
+      label: Can it read local files (to load a skill)?
+      options:
+        - "yes"
+        - "no"
+        - not sure
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Security constraints worth knowing
+      description: Network restrictions, approval prompts, token handling rules, etc.

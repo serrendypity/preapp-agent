@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q2 Operations Report — Example (single file)</title>
+<style>
+  /* Single-file example: everything inline, publish with `preapp publish examples/quarterly-report.html` */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 20px 80px;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #f6f7f4; color: #1c2420; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; }
+  .kicker { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #4c8a6d; font-weight: 700; margin: 0 0 10px; }
+  h1 { font-size: 34px; letter-spacing: -.02em; line-height: 1.15; margin: 0 0 6px; }
+  .meta { color: #6b7a71; font-size: 13px; margin: 0 0 34px; }
+  h2 { font-size: 20px; margin: 38px 0 10px; letter-spacing: -.01em; }
+  p  { margin: 0 0 14px; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0 8px; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #dfe4de; }
+  th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: #6b7a71; }
+  td.n { font-variant-numeric: tabular-nums; text-align: right; }
+  .up { color: #2f7d54; font-weight: 600; }
+  .down { color: #b0472e; font-weight: 600; }
+  .callout { background: #eaf2ec; border-left: 4px solid #4c8a6d; border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .bar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; margin: 10px 0 6px; }
+  .bar i { display: block; height: 100%; }
+  .legend { font-size: 12.5px; color: #6b7a71; }
+  footer { margin-top: 48px; font-size: 12px; color: #93a09a; }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">Operations · Q2 2026</p>
+  <h1>Quarterly Operations Report</h1>
+  <p class="meta">Prepared by the ops agent · draft v1 · for internal review</p>
+
+  <h2>Summary</h2>
+  <p>Fulfillment throughput grew 22% QoQ while unit cost fell 9%. The two remaining drags are return-processing latency (still 4.1 days on average) and the manual exceptions queue, which consumed 310 staff-hours this quarter.</p>
+
+  <div class="callout"><b>Decision needed:</b> approve automation of the exceptions triage (est. 6 engineering weeks, breaks even in ~2 quarters), or keep staffing it manually through Q4 peak.</div>
+
+  <h2>Key metrics</h2>
+  <table>
+    <thead><tr><th>Metric</th><th style="text-align:right">Q1</th><th style="text-align:right">Q2</th><th style="text-align:right">Δ</th></tr></thead>
+    <tbody>
+      <tr><td>Orders fulfilled</td><td class="n">128,400</td><td class="n">156,700</td><td class="n up">+22%</td></tr>
+      <tr><td>Unit fulfillment cost</td><td class="n">$3.42</td><td class="n">$3.11</td><td class="n up">−9%</td></tr>
+      <tr><td>On-time rate</td><td class="n">94.1%</td><td class="n">96.3%</td><td class="n up">+2.2pt</td></tr>
+      <tr><td>Return processing time</td><td class="n">3.8 d</td><td class="n">4.1 d</td><td class="n down">+0.3 d</td></tr>
+      <tr><td>Exceptions handled manually</td><td class="n">4,900</td><td class="n">6,200</td><td class="n down">+27%</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Where the exceptions come from</h2>
+  <div class="bar" role="img" aria-label="Exceptions breakdown: address issues 46%, damaged items 27%, payment mismatches 17%, other 10%">
+    <i style="width:46%;background:#4c8a6d" title="Address issues 46%"></i>
+    <i style="width:27%;background:#8fbfa4" title="Damaged items 27%"></i>
+    <i style="width:17%;background:#d9a441" title="Payment mismatches 17%"></i>
+    <i style="width:10%;background:#c7cfc9" title="Other 10%"></i>
+  </div>
+  <p class="legend">■ Address issues 46% · ■ Damaged items 27% · ■ Payment mismatches 17% · ■ Other 10%</p>
+  <p>Address validation at checkout would remove roughly half of the queue on its own; the proposed triage automation covers the rest by routing damaged-item claims straight to the carrier workflow.</p>
+
+  <h2>Next quarter</h2>
+  <p>Q3 priorities, in order: ship exceptions triage automation (pending the decision above), pilot address validation in the two highest-volume regions, and renegotiate the returns carrier contract before peak-season rates lock in September.</p>
+
+  <footer>Example artifact from the preapp-agent repo — publish it with <code>preapp publish examples/quarterly-report.html --title "Q2 Ops Report"</code></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "name": "@preapp/cli",
+  "version": "0.1.0",
+  "description": "Agent-first CLI for PreApp: publish AI-generated HTML decks/reports, share review links, and pull human feedback back into coding agents.",
+  "license": "MIT",
+  "homepage": "https://github.com/serrendypity/preapp-agent#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serrendypity/preapp-agent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/serrendypity/preapp-agent/issues"
+  },
+  "keywords": [
+    "ai-agent",
+    "claude-code",
+    "codex",
+    "cli",
+    "html",
+    "artifact",
+    "feedback",
+    "presentation",
+    "mcp"
+  ],
+  "private": false,
+  "type": "module",
+  "bin": {
+    "preapp": "dist/preapp.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "build": "node build.mjs",
+    "prepack": "pnpm run build",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "yazl": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/yazl": "^3.3.1",
+    "esbuild": "^0.28.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}
