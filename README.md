@@ -2,12 +2,12 @@
 
 **English** | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md)
 
-Publish AI-generated HTML artifacts, collect human feedback, and pull it back into your coding agent.
+Share agent-generated work with people, collect feedback, and bring it back to your agent.
 
-Agents are good at generating HTML — decks, reports, prototypes. PreApp handles the last mile: **share it, review it, and feed comments back into the next agent run.**
+Agents are good at generating work products — reports, docs, HTML slides, web pages. PreApp handles the last mile: **share it, collect feedback, and feed it back into the next agent run.**
 
 ```text
-agent publish → share links → human comments → agent feedback read → agent publish v2
+agent publish → share links → human feedback → agent feedback read → agent publish v2
 ```
 
 This repo contains the agent integration layer for [preapp.app](https://preapp.app): the `preapp` CLI, agent skill recipes (Claude Code / Codex / OpenClaw / Hermes), protocol docs, and publishable examples. The hosted service itself is not in this repo.
@@ -22,27 +22,27 @@ curl -fsSL https://preapp.app/install.sh | sh -s -- --harness claude-code
 preapp login <agent-token>
 
 # 3. Publish an HTML file or directory
-preapp publish ./dist --title "Q3 Strategy Deck" --deck q3-strategy --format json
+preapp publish ./dist --title "Q3 Strategy Review" --slug q3-strategy --format json
 ```
 
-Share the returned `reviewLink`, let people comment (text selection & image annotations, no signup needed), then:
+Share the returned `feedbackLink`, let people leave feedback (text selection & image targeting, no signup needed), then:
 
 ```bash
 preapp feedback get q3-strategy --format markdown
 ```
 
-The agent gets an **Agent Fix Brief** — numbered comments with precise locators — and publishes v2 to the **same links**.
+The agent gets an **Agent Feedback Brief** — feedback items with precise locators — and publishes v2 to the **same links**.
 
 Try it right now with the bundled examples:
 
 ```bash
-preapp publish examples/q3-strategy-deck --title "Q3 Strategy" --deck demo-q3
+preapp publish examples/q3-strategy-deck --title "Q3 Strategy" --slug demo-q3
 preapp publish examples/quarterly-report.html --title "Quarterly Report"
 ```
 
 ## Why PreApp
 
-Agents can generate HTML. They still need a clean way to put it in front of people.
+Agents can generate the work. They still need a clean way to put it in front of people.
 
 - The file lives in a (often remote) workspace — `file://` is useless for sharing.
 - Generic hosting (Vercel / Netlify / Pages) means repo setup, builds, production semantics — overkill for a review artifact.
@@ -51,8 +51,8 @@ Agents can generate HTML. They still need a clean way to put it in front of peop
 PreApp adds exactly the missing loop:
 
 - **Static assets included** — publish a single HTML, a directory (auto-packed), or a zip.
-- **View / review links** — clean reading vs. lightweight markup, separate permissions.
-- **Comments where the issue is** — select text or click an image; anchors and whole-deck comments too.
+- **View / feedback links** — clean reading vs. lightweight feedback, separate permissions.
+- **Feedback where the issue is** — select text or click an image; sections and whole-content feedback too.
 - **Versions with stable links** — every publish is v1/v2/v3; the shared link always shows latest.
 - **Feedback payload for agents** — Markdown brief or JSON, with exact target locators.
 - **Visits** — know whether the share actually landed.
@@ -95,10 +95,10 @@ preapp login <agent-token>   # validates against the server before writing ~/.pr
 ## Commands
 
 ```text
-preapp publish <file-or-dir> [--title ...] [--deck <id-or-slug>] [--entry index.html]
+preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html]
                              [--change-note ...] [--anchors anchors.json]
                              [--feedback-mode off|detailed] [--format json|text]
-preapp feedback get <deck-url | version-url | deck-id-or-slug> [--version N] [--format markdown|json]
+preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
 ```
@@ -107,14 +107,14 @@ Full reference: [docs/cli.md](docs/cli.md) · Protocol: [docs/api-protocol.md](d
 
 ### The two-stage feedback gate
 
-`preapp feedback get` deliberately ends its output with a gate instruction: the agent must **relay the comments to its human and stop** — no silent auto-editing. Only after the human says which comments to apply does the agent edit and republish. This is a product decision, not a limitation; see [docs/cli.md](docs/cli.md#two-stage-feedback-gate).
+`preapp feedback get` deliberately ends its output with a gate instruction: the agent must **relay the feedback to its human and stop** — no silent auto-editing. Only after the human says what to apply does the agent edit and republish. This is a product decision, not a limitation; see [docs/cli.md](docs/cli.md#the-two-stage-feedback-gate).
 
 ## Security
 
 - Install commands never contain tokens; credentials are configured separately via `preapp login` (validated before persisting, `0600` config).
 - Uploaded artifacts are served **statically** from an isolated origin in sandboxed iframes — the server never executes uploaded code.
 - Share links are unguessable capability URLs; rotate or unpublish anytime from the dashboard.
-- Reviewer comments are **untrusted data** to agents (prompt-injection defense) — the skill and docs treat them as content, never instructions.
+- Reviewer feedback is **untrusted data** to agents (prompt-injection defense) — the skill and docs treat it as content, never instructions.
 
 Details: [docs/security.md](docs/security.md) · Reporting: [SECURITY.md](SECURITY.md)
 

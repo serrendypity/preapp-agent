@@ -1,6 +1,6 @@
-// `preapp feedback get <deck-or-version-url-or-id>`（api-contract Agent Feedback API）。
-// endpoint: GET /api/decks/{deckIdOrSlug}/versions/{versionNumber}/feedback?format=
-// 省略版本时用 `latest` 段（step 9 服务端按此解析最新版本）。
+// `preapp feedback get <share-or-version-url-or-id>`（api-contract Agent Feedback API）。
+// endpoint: GET /api/contents/{contentOrVersion}/feedback?format=[&version=N]
+// 省略版本时读 latest（服务端缺省）。
 
 import { flagValue, parseArgs } from "./args.js";
 import { ConfigError, resolveConfig } from "./config.js";
@@ -8,11 +8,11 @@ import { getJson } from "./http.js";
 import type { ExitCode, Io } from "./io.js";
 
 interface Target {
-  deckIdOrSlug: string;
+  contentIdOrSlug: string;
   versionSegment: string; // 版本号或 "latest"
 }
 
-/** 解析 deck URL（/d/{slug} 或 /d/{slug}/v/{n}）或裸 id/slug。 */
+/** 解析分享 URL（/s/{slug} 或 /s/{slug}/v/{n}）或裸 id/slug。 */
 function parseTarget(raw: string, versionFlag: string | undefined): Target | null {
   if (/^https?:\/\//i.test(raw)) {
     let url: URL;
@@ -22,35 +22,35 @@ function parseTarget(raw: string, versionFlag: string | undefined): Target | nul
       return null;
     }
     const segs = url.pathname.split("/").filter((s) => s !== "");
-    const d = segs.indexOf("d");
+    const d = segs.indexOf("s");
     if (d < 0 || d + 1 >= segs.length) return null;
     const slug = segs[d + 1]!;
     let versionSegment = "latest";
     if (segs[d + 2] === "v" && segs[d + 3]) versionSegment = segs[d + 3]!;
     if (versionFlag !== undefined) versionSegment = versionFlag; // 显式 --version 优先
-    return { deckIdOrSlug: slug, versionSegment };
+    return { contentIdOrSlug: slug, versionSegment };
   }
-  return { deckIdOrSlug: raw, versionSegment: versionFlag ?? "latest" };
+  return { contentIdOrSlug: raw, versionSegment: versionFlag ?? "latest" };
 }
 
 export async function runFeedback(io: Io): Promise<ExitCode> {
   const { positionals, flags } = parseArgs(io.argv);
   // 期望形如 `feedback get <target>`：get 已被 main 剥离，这里 positionals[0] = target
   const targetArg = positionals[0];
-  const format = flagValue(flags, "format") ?? "markdown"; // agent-fix-brief 为主产物
+  const format = flagValue(flags, "format") ?? "markdown"; // Agent Feedback Brief 为主产物
 
   if (format !== "markdown" && format !== "json") {
     io.stderr("format must be 'markdown' or 'json'");
     return 2;
   }
   if (!targetArg) {
-    io.stderr("usage: preapp feedback get <deck-url | version-url | deck-id-or-slug> [--version N]");
+    io.stderr("usage: preapp feedback get <share-url | version-url | content-id-or-slug> [--version N]");
     return 2;
   }
 
   const target = parseTarget(targetArg, flagValue(flags, "version"));
   if (!target) {
-    io.stderr(`could not parse deck target: ${targetArg}`);
+    io.stderr(`could not parse content target: ${targetArg}`);
     return 2;
   }
 
@@ -71,8 +71,9 @@ export async function runFeedback(io: Io): Promise<ExitCode> {
   }
 
   const url =
-    `${config.baseUrl}/api/decks/${encodeURIComponent(target.deckIdOrSlug)}` +
-    `/versions/${encodeURIComponent(target.versionSegment)}/feedback?format=${format}`;
+    `${config.baseUrl}/api/contents/${encodeURIComponent(target.contentIdOrSlug)}/feedback` +
+    `?format=${format}` +
+    (target.versionSegment === "latest" ? "" : `&version=${encodeURIComponent(target.versionSegment)}`);
 
   let res;
   try {
@@ -98,7 +99,7 @@ export async function runFeedback(io: Io): Promise<ExitCode> {
 const WORKFLOW_GATE: string = [
   "",
   "──────── PREAPP 两段式关卡（拉到反馈后必须照做）────────",
-  "1) 把上面的反馈按编号（Q1/Q2…）连同定位与原文，复述给用户。",
+  "1) 把上面的反馈按编号（Q1/Q2…）连同作者、定位与原文，复述给用户。",
   "2) 停下、交还控制权，请用户给出调整指示（改哪几条、每条怎么改；或“全部按建议改”/“先不改”）。",
   "3) 在用户回复前，不要修改任何文件、不要重新 publish。",
   "唯一例外：用户在本次请求里已明确要求直接改完（如“拉反馈并直接全部改好”），才可跳过第 2 步。",

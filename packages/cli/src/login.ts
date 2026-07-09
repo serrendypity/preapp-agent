@@ -74,6 +74,6 @@ export async function runLogin(io: Io): Promise<ExitCode> {
   }
   io.stdout(`✓ 已保存凭证到 ~/.preapp/config.json${who}`);
   io.stdout(`  baseUrl：${baseUrl}`);
-  io.stdout("现在可以：preapp publish <文件或目录> --deck <slug>");
+  io.stdout("现在可以：preapp publish <文件或目录> --slug <slug>");
   return 0;
 }

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 — 2026-07-10
+
+**Breaking — content/feedback semantics.** PreApp's core objects were renamed from deck/comment to content/feedback across the API, CLI, and share pages (no compatibility layer; the hosted service migrated in lockstep, so 0.1.0 CLIs no longer work against it — upgrade with `npm i -g @preapp/cli`).
+
+- CLI: `--deck` → `--slug`; `preapp feedback get` now parses `/s/…` share URLs and calls `GET /api/contents/{contentOrVersion}/feedback` (`?version=N`, or a `ver_` id to pin a version).
+- Publish: `POST /api/contents/publish`; multipart fields `content` / `feedbackAnchors` (was `deck` / `reviewAnchors`); response fields `contentId` / `contentSlug` / `feedbackLink` (was `deckId` / `deckSlug` / `reviewLink`); share links moved from `/d/…` to `/s/…`.
+- Feedback: the brief is now the **Agent Feedback Brief** (Content / Version / Visit Summary / Feedback / Raw Feedback JSON / Safety Note). Per-item "fix drafts" and `agentInstructions` were removed — feedback is presented neutrally (it may be a question or extra context, not necessarily a change request); precise locators live in the raw JSON. `comments[]` → `feedback[]`, `_notice` → `safetyNote`, and the reserved `simpleFeedback` field is gone.
+- Feedback items no longer have a `kind` category — `text` is the only body; a legacy `kind` field in submissions is ignored.
+- Share pages: the primary action is now "feedback" everywhere (submit button, placeholders, target labels: whole content / selected text / image / section), in all five languages.
+
 ## 0.1.0 — 2026-07-08
 
 First public release of the PreApp agent integration layer.
