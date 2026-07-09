@@ -82,14 +82,13 @@ preapp login <agent-token>   # valida contra el servidor antes de escribir ~/.pr
 
 ## Agents compatibles
 
-| Agent | Estado | Cómo |
-|---|---|---|
-| Claude Code | ✅ Compatible | `~/.claude/skills/preapp-publish/SKILL.md` (autodescubierto) |
-| Codex | ✅ Compatible (beta) | directorio de skills + [snippet AGENTS.md](skills/codex/preapp-publish/AGENTS-snippet.md) |
-| OpenClaw | 🧪 Experimental | ruta convencional, redefinible con `--dir` |
-| Hermes | 🧪 Experimental | ruta convencional, redefinible con `--dir` |
-| Cursor / cualquier agent con shell | 📄 Receta | indica al agent que ejecute la CLI `preapp` |
-| CI / GitHub Actions | 🗺 Planificado | publicar artefactos de build para revisión |
+| Agent | Cómo |
+|---|---|
+| Claude Code | `~/.claude/skills/preapp-publish/SKILL.md` (autodescubierto) |
+| Codex | directorio de skills + [snippet AGENTS.md](skills/codex/preapp-publish/AGENTS-snippet.md) |
+| OpenClaw | ruta convencional, redefinible con `--dir` |
+| Hermes | ruta convencional, redefinible con `--dir` |
+| Cursor / cualquier agent con shell | indica al agent que ejecute la CLI `preapp` |
 
 > PreApp ofrece una CLI y recetas de skills para agents. Claude Code es el primero en soportarse; las recetas de Codex/OpenClaw/Hermes están abiertas a mejoras de la comunidad — [PRs bienvenidos](CONTRIBUTING.md).
 

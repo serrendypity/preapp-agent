@@ -82,14 +82,13 @@ preapp login <agent-token>   # ~/.preapp/config.json에 쓰기 전에 서버로 
 
 ## 지원 agent
 
-| Agent | 상태 | 방식 |
-|---|---|---|
-| Claude Code | ✅ 지원 | `~/.claude/skills/preapp-publish/SKILL.md` (자동 발견) |
-| Codex | ✅ 지원 (beta) | skill 디렉터리 + [AGENTS.md 스니펫](skills/codex/preapp-publish/AGENTS-snippet.md) |
-| OpenClaw | 🧪 실험적 | 관례 경로, `--dir`로 재정의 가능 |
-| Hermes | 🧪 실험적 | 관례 경로, `--dir`로 재정의 가능 |
-| Cursor / shell 실행 가능한 agent | 📄 레시피 | agent가 `preapp` CLI를 직접 실행 |
-| CI / GitHub Actions | 🗺 계획 중 | 빌드 산출물을 리뷰용으로 게시 |
+| Agent | 방식 |
+|---|---|
+| Claude Code | `~/.claude/skills/preapp-publish/SKILL.md` (자동 발견) |
+| Codex | skill 디렉터리 + [AGENTS.md 스니펫](skills/codex/preapp-publish/AGENTS-snippet.md) |
+| OpenClaw | 관례 경로, `--dir`로 재정의 가능 |
+| Hermes | 관례 경로, `--dir`로 재정의 가능 |
+| Cursor / shell 실행 가능한 agent | agent가 `preapp` CLI를 직접 실행 |
 
 > PreApp은 CLI와 agent skill 레시피를 제공합니다. Claude Code를 가장 먼저 지원하며, Codex/OpenClaw/Hermes 레시피는 커뮤니티의 개선을 환영합니다 — [PR 환영](CONTRIBUTING.md).
 

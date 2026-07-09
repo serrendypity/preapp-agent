@@ -82,14 +82,13 @@ preapp login <agent-token>   # validates against the server before writing ~/.pr
 
 ## Supported agents
 
-| Agent | Status | How |
-|---|---|---|
-| Claude Code | ✅ Supported | `~/.claude/skills/preapp-publish/SKILL.md` (auto-discovered) |
-| Codex | ✅ Supported (beta) | skill dir + [AGENTS.md snippet](skills/codex/preapp-publish/AGENTS-snippet.md) |
-| OpenClaw | 🧪 Experimental | conventional skill path, `--dir` override |
-| Hermes | 🧪 Experimental | conventional skill path, `--dir` override |
-| Cursor / anything with a shell | 📄 Recipe | tell the agent to run the `preapp` CLI |
-| CI / GitHub Actions | 🗺 Planned | publish build artifacts for review |
+| Agent | How |
+|---|---|
+| Claude Code | `~/.claude/skills/preapp-publish/SKILL.md` (auto-discovered) |
+| Codex | skill dir + [AGENTS.md snippet](skills/codex/preapp-publish/AGENTS-snippet.md) |
+| OpenClaw | conventional skill path, `--dir` override |
+| Hermes | conventional skill path, `--dir` override |
+| Cursor / anything with a shell | tell the agent to run the `preapp` CLI |
 
 > PreApp ships a CLI and agent skill recipes. Claude Code is supported first; Codex/OpenClaw/Hermes recipes are open for community hardening — [PRs welcome](CONTRIBUTING.md).
 
