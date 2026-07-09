@@ -82,14 +82,13 @@ preapp login <agent-token>   # ~/.preapp/config.json に書く前にサーバー
 
 ## 対応 agent
 
-| Agent | 状態 | 方法 |
-|---|---|---|
-| Claude Code | ✅ 対応 | `~/.claude/skills/preapp-publish/SKILL.md`(自動発見) |
-| Codex | ✅ 対応(beta) | skill ディレクトリ + [AGENTS.md スニペット](skills/codex/preapp-publish/AGENTS-snippet.md) |
-| OpenClaw | 🧪 実験的 | 慣例パス、`--dir` で上書き可 |
-| Hermes | 🧪 実験的 | 慣例パス、`--dir` で上書き可 |
-| Cursor / shell が使える agent | 📄 レシピ | agent に `preapp` CLI を実行させる |
-| CI / GitHub Actions | 🗺 計画中 | ビルド成果物をレビュー用に publish |
+| Agent | 方法 |
+|---|---|
+| Claude Code | `~/.claude/skills/preapp-publish/SKILL.md`(自動発見) |
+| Codex | skill ディレクトリ + [AGENTS.md スニペット](skills/codex/preapp-publish/AGENTS-snippet.md) |
+| OpenClaw | 慣例パス、`--dir` で上書き可 |
+| Hermes | 慣例パス、`--dir` で上書き可 |
+| Cursor / shell が使える agent | agent に `preapp` CLI を実行させる |
 
 > PreApp は CLI と agent skill レシピを提供します。Claude Code を最初にサポート;Codex/OpenClaw/Hermes のレシピはコミュニティでの改善を歓迎——[PR はこちら](CONTRIBUTING.md)。
 
