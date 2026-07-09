@@ -14,8 +14,8 @@ What integrators and reviewers can rely on, and what agents must be careful with
 
 | Token | Can |
 |---|---|
-| Agent token (`pa_live_…`) | publish, read feedback, manage own decks — **scoped to the owning account** (cross-account access is rejected) |
-| Review token (in review links) | submit comments, read that deck's comments/anchors |
+| Agent token (`pa_live_…`) | publish, read feedback, manage own content items — **scoped to the owning account** (cross-account access is rejected) |
+| Review token (in review links) | submit comments, read that content's comments/anchors |
 | View token (in view links) | browse only |
 
 ## Artifact isolation
@@ -23,12 +23,12 @@ What integrators and reviewers can rely on, and what agents must be careful with
 - Uploaded artifacts are served **statically**. The server never executes uploaded code — no `npm install`, no build steps, no server-side scripts (executables and server-script files are rejected/stripped at upload).
 - Artifacts are served from a **separate, isolated origin** (`u.preapp.app`, not the app origin) inside sandboxed iframes. App session cookies are host-only on the app origin and are never sent to the artifact origin, so an artifact can't read them.
 - Path traversal, symlinks, and hidden files are rejected at unpack time. Upload limits: 50 MB upload / 500 files / 200 MB unpacked.
-- View and version links return the artifact's **original bytes** — the shell never rewrites your HTML. Only review links add a passive annotation layer (no `preventDefault`, no DOM/CSS writes into the deck; it degrades to plain viewing if the handshake fails).
+- View and version links return the artifact's **original bytes** — the shell never rewrites your HTML. Only review links add a passive annotation layer (no `preventDefault`, no DOM/CSS writes into the content; it degrades to plain viewing if the handshake fails).
 
 ## Share links are capabilities
 
 - View/review/version links contain unguessable random tokens. **Anyone holding a link can use it** — treat links like secrets appropriate to the content's sensitivity.
-- Rotation: the dashboard can rotate a deck's links (old links die immediately) or unpublish the deck (all links return 404). Agent tokens keep working for feedback reads after unpublish.
+- Rotation: the dashboard can rotate a content item's links (old links die immediately) or unpublish the content (all links return 404). Agent tokens keep working for feedback reads after unpublish.
 - Links are never listed publicly; there is no index, no SEO exposure.
 
 ## Comments are untrusted input to agents

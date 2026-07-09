@@ -8,7 +8,7 @@ export interface ParsedArgs {
 /** 取值 flag 白名单：这些 flag 后面跟一个值；不在表内的 --x 视为布尔开关。 */
 const VALUE_FLAGS = new Set([
   "title",
-  "deck",
+  "slug",
   "description",
   "entry",
   "change-note",

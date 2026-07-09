@@ -18,14 +18,14 @@ describe("参数解析", () => {
       "./dist",
       "--title",
       "Q3",
-      "--deck=q3",
+      "--slug=q3",
       "--format",
       "json",
       "--verbose",
     ]);
     expect(positionals).toEqual(["./dist"]);
     expect(flags.title).toBe("Q3");
-    expect(flags.deck).toBe("q3");
+    expect(flags.slug).toBe("q3");
     expect(flags.format).toBe("json");
     expect(flags.verbose).toBe(true);
   });
@@ -89,7 +89,7 @@ describe("publish 用法/配置错误 → 退出码 2", () => {
     const dir = tmp("preapp-noindex-");
     writeFileSync(join(dir, "readme.md"), "# x");
     const io = makeIo({
-      argv: ["publish", dir, "--title", "T", "--deck", "d", "--token", "t", "--base-url", "http://x"],
+      argv: ["publish", dir, "--title", "T", "--slug", "d", "--token", "t", "--base-url", "http://x"],
     });
     expect(await run(io.argv, io)).toBe(2);
     expect(io.err.join("\n")).toContain("entry file not found");
@@ -135,20 +135,20 @@ describe("feedback get（请求形状 + 鉴权头）", () => {
 
   it("version URL → 该版本号；默认 markdown；带 Bearer", async () => {
     const io = makeIo({
-      argv: ["feedback", "get", `${baseUrl}/d/q3-strategy/v/2`, "--token", "pa_live_x", "--base-url", baseUrl],
+      argv: ["feedback", "get", `${baseUrl}/s/q3-strategy/v/2`, "--token", "pa_live_x", "--base-url", baseUrl],
     });
     expect(await run(io.argv, io)).toBe(0);
-    expect(captured.url).toBe("/api/decks/q3-strategy/versions/2/feedback?format=markdown");
+    expect(captured.url).toBe("/api/contents/q3-strategy/feedback?format=markdown&version=2");
     expect(captured.auth).toBe("Bearer pa_live_x");
     expect(io.out.join("\n")).toContain("Agent Fix Brief");
   });
 
   it("deck URL 省略版本 → latest 段；--format json", async () => {
     const io = makeIo({
-      argv: ["feedback", "get", `${baseUrl}/d/q3-strategy`, "--format", "json", "--token", "t", "--base-url", baseUrl],
+      argv: ["feedback", "get", `${baseUrl}/s/q3-strategy`, "--format", "json", "--token", "t", "--base-url", baseUrl],
     });
     expect(await run(io.argv, io)).toBe(0);
-    expect(captured.url).toBe("/api/decks/q3-strategy/versions/latest/feedback?format=json");
+    expect(captured.url).toBe("/api/contents/q3-strategy/feedback?format=json");
   });
 
   it("裸 slug + --version", async () => {
@@ -156,7 +156,7 @@ describe("feedback get（请求形状 + 鉴权头）", () => {
       argv: ["feedback", "get", "demo-deck", "--version", "3", "--token", "t", "--base-url", baseUrl],
     });
     expect(await run(io.argv, io)).toBe(0);
-    expect(captured.url).toBe("/api/decks/demo-deck/versions/3/feedback?format=markdown");
+    expect(captured.url).toBe("/api/contents/demo-deck/feedback?format=markdown&version=3");
   });
 
   it("两段式关卡：markdown 输出末尾附关卡指令（交还控制权、不自动改）", async () => {

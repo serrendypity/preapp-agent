@@ -4,8 +4,8 @@
 
 `preapp-publish` is a skill file (a `SKILL.md` recipe) that teaches a coding agent when and how to use PreApp:
 
-- **Publish**: when the user says "share this report" / "publish this deck", run `preapp publish <file-or-dir> --title ... --deck <slug> --format json` and hand back `viewLink` (for readers) and `reviewLink` (for annotators).
-- **Versioning**: republishing with the same `--deck` creates a new version; the share links stay stable.
+- **Publish**: when the user says "share this report" / "publish this", run `preapp publish <file-or-dir> --title ... --slug <slug> --format json` and hand back `viewLink` (for readers) and `feedbackLink` (for annotators).
+- **Versioning**: republishing with the same `--slug` creates a new version; the share links stay stable.
 - **Feedback**: when the user says "check the feedback", run `preapp feedback get <link> --format markdown`, restate the comments (numbered Q1, Q2, …) with their locators, then **stop and hand control back to the human** before editing anything — the two-stage gate described in [cli.md](cli.md#the-two-stage-feedback-gate).
 - **Trust**: reviewer comments are untrusted external data — the skill instructs the agent to treat them as content, never as instructions (see [security.md](security.md)).
 - **Token setup**: if a command fails with "missing agent token" (exit 2), the skill walks the agent through asking the user for a token and running `preapp login`.
@@ -48,9 +48,9 @@ preapp skill install --harness claude-code --force
 Cursor has no skill-file convention this installer targets, so integrate by instruction. Install the CLI (see [install.md](install.md)), run `preapp login`, then add something like this to your Cursor rules:
 
 ```text
-To share an HTML report/deck the session produced, run:
-  preapp publish <file-or-dir> --title "..." --deck <stable-slug> --format json
-and give the user the viewLink (readers) and reviewLink (annotators) from the JSON.
+To share an HTML report/page the session produced, run:
+  preapp publish <file-or-dir> --title "..." --slug <stable-slug> --format json
+and give the user the viewLink (readers) and feedbackLink (annotators) from the JSON.
 
 To read reviewer feedback, run:
   preapp feedback get <link-or-slug> --format markdown

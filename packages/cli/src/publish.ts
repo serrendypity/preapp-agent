@@ -39,7 +39,7 @@ async function buildArtifact(
   const stat = statSync(target); // 不存在 → ENOENT，命令层转 UsageError
   if (stat.isDirectory()) {
     const packed = await packDirectory(target, entryFlag ?? "index.html");
-    return { bytes: packed.zip, filename: "deck.zip", entryField: packed.entryFile };
+    return { bytes: packed.zip, filename: "content.zip", entryField: packed.entryFile };
   }
   if (stat.isFile()) {
     const name = basename(target);
@@ -55,11 +55,11 @@ async function buildArtifact(
 
 function summarize(json: Record<string, unknown>): string[] {
   const lines = [
-    `✓ published ${String(json.deckSlug)} · PROOF v${String(json.versionNumber)}`,
-    `  view:    ${String(json.viewLink)}`,
-    `  review:  ${String(json.reviewLink)}`,
-    `  version: ${String(json.versionLink)}`,
-    `  feedback: ${String(json.feedbackCommand)}`,
+    `✓ published ${String(json.contentSlug)} · PROOF v${String(json.versionNumber)}`,
+    `  view:     ${String(json.viewLink)}`,
+    `  feedback: ${String(json.feedbackLink)}`,
+    `  version:  ${String(json.versionLink)}`,
+    `  pull:     ${String(json.feedbackCommand)}`,
   ];
   const warnings = json.warnings;
   if (Array.isArray(warnings) && warnings.length > 0) {
@@ -75,7 +75,7 @@ export async function runPublish(io: Io): Promise<ExitCode> {
 
   const targetArg = positionals[0];
   if (!targetArg) {
-    io.stderr("usage: preapp publish <file-or-dir> [--title ...] [--deck ...]");
+    io.stderr("usage: preapp publish <file-or-dir> [--title ...] [--slug ...]");
     return 2;
   }
 
@@ -116,7 +116,7 @@ export async function runPublish(io: Io): Promise<ExitCode> {
 
   const strFlags: Array<[string, string]> = [
     ["title", "title"],
-    ["deck", "deck"],
+    ["slug", "content"],
     ["description", "description"],
     ["change-note", "changeNote"],
     ["feedback-mode", "feedbackMode"],
@@ -130,7 +130,7 @@ export async function runPublish(io: Io): Promise<ExitCode> {
   const anchorsFile = flagValue(flags, "anchors");
   if (anchorsFile !== undefined) {
     try {
-      form.append("reviewAnchors", readFileSync(resolvePath(io.cwd, anchorsFile), "utf8"));
+      form.append("feedbackAnchors", readFileSync(resolvePath(io.cwd, anchorsFile), "utf8"));
     } catch {
       io.stderr(`anchors file not found: ${anchorsFile}`);
       return 2;
@@ -140,7 +140,7 @@ export async function runPublish(io: Io): Promise<ExitCode> {
   const idempotencyKey = randomUUID();
   let res;
   try {
-    res = await postPublish(`${config.baseUrl}/api/decks/publish`, config.token, form, idempotencyKey);
+    res = await postPublish(`${config.baseUrl}/api/contents/publish`, config.token, form, idempotencyKey);
   } catch (err) {
     io.stderr((err as Error).message);
     return 1;

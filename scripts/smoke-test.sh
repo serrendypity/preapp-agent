@@ -26,17 +26,17 @@ STAMP=$(date +%s)
 
 echo "==> publish directory example (with assets)"
 $CLI publish "$ROOT/examples/q3-strategy-deck" \
-  --title "Smoke: Q3 Strategy" --deck "smoke-deck-$STAMP" --format json \
+  --title "Smoke: Q3 Strategy" --slug "smoke-deck-$STAMP" --format json \
   --token "$PREAPP_TOKEN" --base-url "$URL"
 
 echo "==> publish single-file example"
 $CLI publish "$ROOT/examples/quarterly-report.html" \
-  --title "Smoke: Q2 Ops Report" --deck "smoke-report-$STAMP" --format json \
+  --title "Smoke: Q2 Ops Report" --slug "smoke-report-$STAMP" --format json \
   --token "$PREAPP_TOKEN" --base-url "$URL"
 
 echo "==> republish directory example → v2, stable links"
 $CLI publish "$ROOT/examples/q3-strategy-deck" \
-  --deck "smoke-deck-$STAMP" --change-note "smoke v2" --format json \
+  --slug "smoke-deck-$STAMP" --change-note "smoke v2" --format json \
   --token "$PREAPP_TOKEN" --base-url "$URL"
 
 echo "==> feedback get (markdown brief; empty comments is fine)"

@@ -3,10 +3,10 @@
 `preapp` — publish HTML artifacts, hand out share links, read reviewer feedback. The CLI is agent-first: default output is machine-readable, errors go to stderr, and exit codes are stable.
 
 ```text
-preapp publish <file-or-dir> [--title ...] [--deck <id-or-slug>] [--entry index.html]
+preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html]
                              [--change-note ...] [--anchors anchors.json]
                              [--feedback-mode off|detailed] [--format json|text]
-preapp feedback get <deck-url | version-url | deck-id-or-slug> [--version N] [--format markdown|json]
+preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
 preapp --version
@@ -29,7 +29,7 @@ Every command that talks to the server accepts `--token` / `--base-url` as one-o
 | --- | --- | --- |
 | `0` | Success | |
 | `1` | Server or network error | non-2xx HTTP response, unreachable host, token rejected during `login` |
-| `2` | Usage or config error | unknown command, missing token/baseUrl, path not found, entry file missing, invalid `--format` value, config file is not valid JSON |
+| `2` | Usage or config error | unknown command, missing token/baseUrl, path not found, entry file missing, invalid `--format` value on `feedback get`, config file is not valid JSON |
 
 Exit code `2` means something is fixable locally (arguments or configuration); `1` means the request reached the network layer and failed.
 
@@ -37,8 +37,8 @@ Exit code `2` means something is fixable locally (arguments or configuration); `
 
 ```sh
 preapp publish ./dist \
-  --title "Q3 Strategy Deck" \
-  --deck q3-strategy \
+  --title "Q3 Strategy Review" \
+  --slug q3-strategy \
   --entry index.html \
   --change-note "Tightened pricing section" \
   --anchors anchors.json \
@@ -49,12 +49,12 @@ Publishes a single `.html`/`.htm` file, or a directory (packed into a zip client
 
 | Flag | Description |
 | --- | --- |
-| `--title <text>` | Deck title. Required when creating a new deck. |
-| `--deck <id-or-slug>` | Publish a new version of an existing deck. Omit to create a new deck with a random slug. |
+| `--title <text>` | Content title. Required when creating a new content item. |
+| `--slug <id-or-slug>` | Publish a new version of an existing content item. Omit to create a new one with a random slug. |
 | `--entry <path>` | Entry file inside the artifact. Directory default: `index.html` (must exist after packing, or exit 2). Single-file default: the file itself. |
-| `--description <text>` | Human-readable deck description. |
+| `--description <text>` | Human-readable content description. |
 | `--change-note <text>` | Version note, shown alongside the version. |
-| `--anchors <file.json>` | JSON array of review anchors, sent as `reviewAnchors` (see [api-protocol.md](api-protocol.md#review-anchors)). |
+| `--anchors <file.json>` | JSON array of review anchors, sent as `feedbackAnchors` (see [api-protocol.md](api-protocol.md#review-anchors)). |
 | `--feedback-mode <off\|detailed>` | Feedback mode for the review link. Default `detailed`. |
 | `--format <json\|text>` | Output format. Default `json`. |
 | `--token`, `--base-url` | One-off credential overrides. |
@@ -77,37 +77,37 @@ Each invocation generates a fresh UUID `Idempotency-Key`. On network failure or 
 
 ### Output
 
-`--format json` (default) prints the full `201` response body to stdout — parse `viewLink`, `reviewLink`, `versionLink`, `feedbackCommand` from it. `--format text` prints a human summary:
+`--format json` (default) prints the full `201` response body to stdout — parse `viewLink`, `feedbackLink`, `versionLink`, `feedbackCommand` from it. `--format text` prints a human summary:
 
 ```text
 ✓ published q3-strategy · PROOF v2
-  view:    https://preapp.app/d/q3-strategy?token=view_xxx
-  review:  https://preapp.app/d/q3-strategy/feedback?token=review_xxx
-  version: https://preapp.app/d/q3-strategy/v/2?token=view_xxx
-  feedback: preapp feedback get https://preapp.app/d/q3-strategy/v/2 --format markdown
+  view:     https://preapp.app/s/q3-strategy?token=view_xxx
+  feedback: https://preapp.app/s/q3-strategy/feedback?token=review_xxx
+  version:  https://preapp.app/s/q3-strategy/v/2?token=view_xxx
+  pull:     preapp feedback get https://preapp.app/s/q3-strategy --format markdown
   warnings: 1
     - external resource: https://cdn.example.com/font.css
 ```
 
-Re-publishing with the same `--deck` creates a new version; the stable view/review links keep working and always show the latest version.
+Re-publishing with the same `--slug` creates a new version; the stable view/feedback links keep working and always show the latest version.
 
 ## `preapp feedback get`
 
 ```sh
-preapp feedback get https://preapp.app/d/q3-strategy            # latest version
-preapp feedback get https://preapp.app/d/q3-strategy/v/2        # that version
-preapp feedback get q3-strategy --version 3 --format json       # bare slug or deck id
+preapp feedback get https://preapp.app/s/q3-strategy            # latest version
+preapp feedback get https://preapp.app/s/q3-strategy/v/2        # that version
+preapp feedback get q3-strategy --version 3 --format json       # bare slug or content id
 ```
 
-Fetches the structured feedback for one version. The target can be any deck link (view, review, or version permalink — the token query string is ignored) or a bare deck id/slug. An explicit `--version N` overrides the version found in a URL; with no version, `latest` is used.
+Fetches the structured feedback for one version. The target can be any share link (view, feedback, or version permalink — the token query string is ignored) or a bare content id/slug. An explicit `--version N` overrides the version found in a URL; with no version, `latest` is used.
 
 | Flag | Description |
 | --- | --- |
 | `--version <N>` | Version number. Default: latest, or the version embedded in the URL. |
-| `--format <markdown\|json>` | `markdown` (default) renders the Agent Fix Brief; `json` returns the structured payload. Any other value is a usage error. |
+| `--format <markdown\|json>` | `markdown` (default) renders the Agent Feedback Brief; `json` returns the structured payload. Any other value is a usage error. |
 | `--token`, `--base-url` | One-off credential overrides. |
 
-Maps to `GET /api/decks/{deck}/versions/{version|latest}/feedback?format=...` (see [api-protocol.md](api-protocol.md)). Payload details, including which fields are untrusted, are in [feedback-payload.md](feedback-payload.md).
+Maps to `GET /api/contents/{contentOrVersion}/feedback?format=...` (see [api-protocol.md](api-protocol.md)). Payload details, including which fields are untrusted, are in [feedback-payload.md](feedback-payload.md).
 
 ### The two-stage feedback gate
 

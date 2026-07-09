@@ -11,10 +11,10 @@ The agent-facing surface is intentionally small: one endpoint to publish, one to
 | Token | Where it lives | Can | Cannot |
 | --- | --- | --- | --- |
 | Agent token (`pa_live_...`) | Your machine / CI secret | Publish artifacts, read feedback, `GET /api/me` | — |
-| Review token | Embedded in the review link | Open the review page, read and submit comments on that deck | Publish, read the feedback API |
-| View token | Embedded in the view link | Browse the deck | Comment, publish, read the feedback API |
+| Review token | Embedded in the feedback link | Open the feedback page, read and submit feedback on that content | Publish, read the feedback API |
+| View token | Embedded in the view link | Browse the content | Comment, publish, read the feedback API |
 
-Agent tokens are generated and revoked in the PreApp dashboard. Review/view tokens are minted by the server at publish time and returned inside `reviewLink` / `viewLink` — treat those links as secrets (see [security.md](security.md)).
+Agent tokens are generated and revoked in the PreApp dashboard. Review/view tokens are minted by the server at publish time and returned inside `feedbackLink` / `viewLink` — treat those links as secrets (see [security.md](security.md)).
 
 ## `GET /api/me`
 
@@ -33,12 +33,12 @@ Authorization: Bearer pa_live_xxxxxxxx
 
 `401` `{"error": "unauthorized"}` — missing, invalid, or revoked token.
 
-## `POST /api/decks/publish`
+## `POST /api/contents/publish`
 
-Publish an artifact as a new deck, or as a new version of an existing deck.
+Publish an artifact as a new content item, or as a new version of an existing one.
 
 ```http
-POST /api/decks/publish
+POST /api/contents/publish
 Authorization: Bearer pa_live_xxxxxxxx
 Idempotency-Key: 5f0f2a44-9c1b-4e0e-9a5e-1c2d3e4f5a6b
 Content-Type: multipart/form-data
@@ -49,12 +49,12 @@ Content-Type: multipart/form-data
 | Field | Required | Description |
 | --- | --- | --- |
 | `artifact` | yes | The HTML file or zip file. |
-| `deck` | no | Existing deck id or slug. Empty/omitted creates a new deck with a random slug. |
-| `title` | for new decks | Deck title. |
-| `description` | no | Human-readable deck description. |
+| `content` | no | Existing content id or slug. Empty/omitted creates a new content item with a random slug. |
+| `title` | for new content items | Content title. |
+| `description` | no | Human-readable content description. |
 | `entry` | no | Entry file path inside the artifact. Defaults to `index.html` for zips, the file name for single HTML. |
 | `changeNote` | no | Version note. |
-| `reviewAnchors` | no | JSON array of review anchors (below). |
+| `feedbackAnchors` | no | JSON array of review anchors (below). |
 | `feedbackMode` | no | `off` or `detailed` (default `detailed`). |
 
 ### Accepted artifact shapes
@@ -75,7 +75,7 @@ Only static assets are hosted. Uploads containing path traversal, symlink entrie
 
 ### Review anchors
 
-`reviewAnchors` is an optional JSON array giving reviewers named sections to attach comments to (PreApp does not parse or infer deck structure itself):
+`feedbackAnchors` is an optional JSON array giving reviewers named sections to attach feedback to (PreApp does not parse or infer content structure itself):
 
 ```json
 [
@@ -91,16 +91,16 @@ Inheritance across versions: **omit the field** and the new version copies the p
 
 ```json
 {
-  "deckId": "deck_01JZ8Q7M2B9T3EXAMPLE",
-  "deckSlug": "q3-strategy",
+  "contentId": "cnt_01JZ8Q7M2B9T3EXAMPLE",
+  "contentSlug": "q3-strategy",
   "versionId": "ver_01JZ8Q8A1K6P4EXAMPLE",
   "versionNumber": 1,
   "artifactHash": "sha256:9d5f...",
   "entry": "index.html",
-  "viewLink": "https://preapp.app/d/q3-strategy?token=view_xxx",
-  "reviewLink": "https://preapp.app/d/q3-strategy/feedback?token=review_xxx",
-  "versionLink": "https://preapp.app/d/q3-strategy/v/1?token=view_xxx",
-  "feedbackCommand": "preapp feedback get https://preapp.app/d/q3-strategy/v/1 --format markdown",
+  "viewLink": "https://preapp.app/s/q3-strategy?token=view_xxx",
+  "feedbackLink": "https://preapp.app/s/q3-strategy/feedback?token=review_xxx",
+  "versionLink": "https://preapp.app/s/q3-strategy/v/1?token=view_xxx",
+  "feedbackCommand": "preapp feedback get https://preapp.app/s/q3-strategy --format markdown",
   "createdAt": "2026-07-03T04:00:00Z",
   "warnings": ["external resource: https://cdn.example.com/font.css"]
 }
@@ -111,12 +111,12 @@ Inheritance across versions: **omit the field** and the new version copies the p
 ### curl example
 
 ```sh
-curl -X POST https://preapp.app/api/decks/publish \
+curl -X POST https://preapp.app/api/contents/publish \
   -H "Authorization: Bearer pa_live_xxxxxxxx" \
   -H "Idempotency-Key: $(uuidgen)" \
-  -F "artifact=@deck.zip;type=application/zip" \
-  -F "deck=q3-strategy" \
-  -F "title=Q3 Strategy Deck" \
+  -F "artifact=@content.zip;type=application/zip" \
+  -F "content=q3-strategy" \
+  -F "title=Q3 Strategy Review" \
   -F "changeNote=Tightened pricing section"
 ```
 
@@ -130,42 +130,43 @@ curl -X POST https://preapp.app/api/decks/publish \
 
 ### Version semantics
 
-- The stable `viewLink` / `reviewLink` always show the **latest** version.
+- The stable `viewLink` / `feedbackLink` always show the **latest** version.
 - `versionLink` is a permalink pinned to that specific version.
-- Comments and feedback bind to a specific version, never merely to "latest".
+- Feedback binds to a specific version, never merely to "latest".
 
 ### Publish errors
 
 | Code | Meaning |
 | --- | --- |
-| `400` | Invalid request fields (e.g. missing `title` for a new deck). |
+| `400` | Invalid request fields (e.g. missing `title` for a new content). |
 | `401` | Missing or invalid agent token. |
-| `403` | Token cannot publish to this deck (not the owner). |
+| `403` | Token cannot publish to this content (not the owner). |
 | `409` | `Idempotency-Key` reused with a different artifact/request. |
 | `413` | Artifact too large: over 50 MB upload / 500 files / 200 MB unpacked. |
 | `415` | Unsupported file type. |
 | `422` | Content rules violated: missing entry file, path traversal, symlink entry, hidden file, executable, server script, unpacked size over limit, reserved `__preapp/` prefix, or invalid anchor JSON. |
 | `503` | Artifact storage temporarily unavailable. Retry with the **same** `Idempotency-Key`. |
 
-## `GET /api/decks/{deck}/versions/{version}/feedback`
+## `GET /api/contents/{contentOrVersion}/feedback`
 
-Read the structured feedback for one version. `{deck}` accepts a deck id or slug; `{version}` is a version number or the literal `latest`.
+Read the structured feedback for one version. `{contentOrVersion}` accepts a content item id or slug (combine with `?version=N`, default latest), or a `ver_`-prefixed version id (pins that exact version).
 
 ```http
-GET /api/decks/q3-strategy/versions/latest/feedback?format=json
+GET /api/contents/q3-strategy/feedback?format=json
 Authorization: Bearer pa_live_xxxxxxxx
 ```
 
 | Query param | Values |
 | --- | --- |
-| `format` | `json` (default) or `markdown` (`text/markdown` — the Agent Fix Brief) |
+| `format` | `json` (default) or `markdown` (`text/markdown` — the Agent Feedback Brief) |
+| `version` | Version number; omit (or `latest`) for the latest version. Ignored when the path is a `ver_` id. |
 
-Both formats render the same source data; the full shape, field-by-field, is documented in [feedback-payload.md](feedback-payload.md). Feedback remains readable with the agent token even after a deck is taken offline.
+Both formats render the same source data; the full shape, field-by-field, is documented in [feedback-payload.md](feedback-payload.md). Feedback remains readable with the agent token even after a content item is taken offline.
 
 ### Feedback errors
 
 | Code | Meaning |
 | --- | --- |
 | `401` | Missing/invalid agent token (review and view tokens cannot call this API). |
-| `403` | Valid agent token, but the deck belongs to another account. |
-| `404` | Unknown deck, unknown version number, or malformed version segment. |
+| `403` | Valid agent token, but the content belongs to another account. |
+| `404` | Unknown content item, unknown version number, or malformed version segment. |

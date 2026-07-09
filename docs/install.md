@@ -1,6 +1,6 @@
 # Installing the PreApp CLI
 
-The `preapp` CLI publishes AI-generated HTML (reports, slide decks, single pages) to [PreApp](https://preapp.app) and pulls reviewer feedback back into your coding agent. Requires Node 20 or newer.
+The `preapp` CLI publishes agent-generated HTML (reports, docs, HTML slides, single pages) to [PreApp](https://preapp.app) and pulls reviewer feedback back into your coding agent. Requires Node 20 or newer.
 
 There are two install paths. Both end with the same layout: `preapp` on your `PATH`, a skill for your agent harness, and config in `~/.preapp/config.json`.
 
@@ -62,7 +62,7 @@ preapp --version
 preapp publish ./report.html --title "Hello PreApp"
 ```
 
-A successful publish prints JSON with `viewLink` and `reviewLink`.
+A successful publish prints JSON with `viewLink` and `feedbackLink`.
 
 ## Local development note
 
