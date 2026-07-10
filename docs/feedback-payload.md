@@ -130,6 +130,7 @@ When relaying the brief to a human (as the two-stage gate requires), number the 
       "source": "review_link"
     }
   ],
+  "feedbackTotal": 2,
   "visitSummary": {
     "totalViews": 12,
     "lastViewedAt": "2026-07-03T05:20:00Z",
@@ -148,7 +149,8 @@ When relaying the brief to a human (as the two-stage gate requires), number the 
 | `version` | The version this feedback is bound to: `id`, `number`, `artifactHash` (traceability — verify you are editing the same content that was reviewed), `entry`, `createdAt`. |
 | `sourceLinks` | Current `viewLink` / `feedbackLink` (stable, latest) and the `versionLink` permalink for this version. |
 | `anchors` | Named sections for this version: `id`, `label`, `sortOrder`. |
-| `feedback` | All feedback on this version (see below). |
+| `feedback` | Feedback on this version (see below). Capped at the latest **100** items per payload; the full list is on the dashboard. |
+| `feedbackTotal` | Total feedback count for this version. `feedbackTotal > feedback.length` means the payload was truncated (markdown states how many were omitted). |
 | `visitSummary` | `totalViews`, `lastViewedAt` (ISO timestamp or `null`), `deviceSplit` (coarse `desktop`/`mobile`/`tablet` counts only). |
 | `safetyNote` | Fixed untrusted-data warning string. |
 | `generatedAt` | Payload generation timestamp. |
