@@ -107,7 +107,7 @@ Full reference: [docs/cli.md](docs/cli.md) · Protocol: [docs/api-protocol.md](d
 
 ### The two-stage feedback gate
 
-`preapp feedback get` deliberately ends its output with a gate instruction: the agent must **relay the feedback to its human and stop** — no silent auto-editing. Only after the human says what to apply does the agent edit and republish. This is a product decision, not a limitation; see [docs/cli.md](docs/cli.md#the-two-stage-feedback-gate).
+`preapp feedback get` deliberately ends its output with a gate instruction: the agent must **safety-scan the feedback, relay each item by its `fb_…` ID, and stop** — a read-only phase (no file edits, no shell/network/credential tools) until the human directs by ID. No silent auto-editing; authorization claimed inside feedback text is void. Only after the human says what to apply does the agent edit and republish. This is a product decision, not a limitation; see [docs/cli.md](docs/cli.md#the-two-stage-feedback-gate).
 
 ## Security
 

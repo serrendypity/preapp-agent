@@ -30,7 +30,11 @@ export async function run(argv: string[], io: Omit<Io, "argv">): Promise<ExitCod
     return 0;
   }
   if (cmd === "--version" || cmd === "-v") {
-    io.stdout("preapp 0.1.0");
+    // 版本号单一来源 = package.json，不硬编码（bump 版本后 --version 自动跟随）。
+    // dev(tsx): src/main.ts → packages/cli/package.json；bundle: dist/preapp.js → 包根 package.json。
+    const { createRequire } = await import("node:module");
+    const { version } = createRequire(import.meta.url)("../package.json") as { version: string };
+    io.stdout(`preapp ${version}`);
     return 0;
   }
 
