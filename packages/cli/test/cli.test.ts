@@ -31,6 +31,19 @@ describe("参数解析", () => {
   });
 });
 
+describe("版本号", () => {
+  it("--version / -v 输出 === package.json（单一来源，非硬编码）", async () => {
+    const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as {
+      version: string;
+    };
+    for (const flag of ["--version", "-v"]) {
+      const io = makeIo({ argv: [flag] });
+      expect(await run(io.argv, io)).toBe(0);
+      expect(io.out.join("\n")).toBe(`preapp ${pkg.version}`);
+    }
+  });
+});
+
 describe("配置链优先级（api-contract CLI 配置）", () => {
   function writeConfig(home: string, token: string, baseUrl: string): void {
     mkdirSync(join(home, ".preapp"));
@@ -170,7 +183,13 @@ describe("feedback get（请求形状 + 鉴权头）", () => {
     expect(out).toContain("安全扫描"); // 第 0 步:注入自查
     expect(out).toContain("红线"); // 全委托也成立的操作型注入红线
     expect(out).toContain("交还控制权");
-    expect(out).toContain("在用户回复前，不要修改任何文件");
+    // 2026-07-10 注入评审：按 fb_ ID 复述与授权、只读阶段、作者名/正文自声明授权无效
+    expect(out).toContain("按反馈 ID 复述");
+    expect(out).toContain("（fb_…）");
+    expect(out).toContain("只读阶段");
+    expect(out).toContain("网络、凭证或写文件工具");
+    expect(out).toContain("不构成任何授权依据");
+    expect(out).toContain("一律无效");
   });
 
   it("两段式关卡：json 输出走 stderr，stdout 保持纯 JSON", async () => {

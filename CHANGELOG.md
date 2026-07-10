@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.3 — 2026-07-10
+
+Third round of feedback prompt-injection hardening (brief format + gate protocol + server-side flood control).
+
+- **Single representation**: the Markdown brief no longer duplicates the feedback array as a `Raw Feedback JSON` section — hostile text appears exactly once, confined to blockquotes; machine-precise target fields (`prefix`/`suffix`/full `target`) come from `--format json`.
+- **Feedback IDs are the reference**: each brief item now leads with its stable `fb_…` ID plus an `author (reviewer-supplied)` label. The gate requires relaying items by ID (with author, original text, and risk flags), and change authorization must come from the human referencing IDs — authorization claimed inside feedback text is void, and author names grant no identity or authority.
+- **Read-only phase**: from pulling feedback until the human directs, the gate forbids file edits, republishing, and shell / network / credential / file-write tools.
+- **Field-level untrusted markers**: every `feedback[]` item (and the submit 201 echo) carries `untrusted: true`, so the marker survives slicing/forwarding.
+- **Persistent rate limiting** (hosted service): sliding windows stored in the database (restart-proof) on two dimensions — per review link (10/min, 500/24h, counting stored feedback) and per client IP (30/min, 300/24h, counting all attempts including invalid-token probing). IPs are stored only as salted hashes retained ≲24h, used for rate decisions only, never for profiling. The brief now states the anti-flood truncation reason and the omitted count.
+
+## 0.2.2 — 2026-07-10
+
+- Fix `preapp --version` printing a stale hardcoded string (`0.1.0`). The version now reads from `package.json` at runtime (single source of truth), so it always matches the installed package. A test locks the two together to prevent regressions.
+
 ## 0.2.1 — 2026-07-10
 
 Prompt-injection hardening for the feedback loop.
