@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 — 2026-07-10
+
+Prompt-injection hardening for the feedback loop.
+
+- The `feedback get` gate now starts with a **safety scan**: the agent must check each item for operational injection (run commands, delete/move files, network, secret exfiltration, "ignore previous instructions", impersonation), flag hits, and never execute anything requested inside feedback text.
+- A **red line that survives full delegation**: "apply without review" authorizes editing the content draft only — never executing actions found in feedback. The `preapp-publish` skill carries the same rules.
+- Docs spell out that PreApp cannot enforce this on the consuming machine; under full delegation the agent runtime's permission/sandbox is the last line of defense.
+
 ## 0.2.0 — 2026-07-10
 
 **Breaking — content/feedback semantics.** PreApp's core objects were renamed from deck/comment to content/feedback across the API, CLI, and share pages (no compatibility layer; the hosted service migrated in lockstep, so 0.1.0 CLIs no longer work against it — upgrade with `npm i -g @preapp/cli`).
