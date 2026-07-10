@@ -1,6 +1,6 @@
 {
   "name": "@preapp/cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Agent-first CLI for PreApp: publish AI-generated HTML decks/reports, share review links, and pull human feedback back into coding agents.",
   "license": "MIT",
   "homepage": "https://github.com/serrendypity/preapp-agent#readme",

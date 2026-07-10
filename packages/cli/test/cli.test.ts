@@ -167,6 +167,8 @@ describe("feedback get（请求形状 + 鉴权头）", () => {
     const out = io.out.join("\n");
     expect(out).toContain("Agent Fix Brief"); // 原始 brief 仍在
     expect(out).toContain("PREAPP 两段式关卡");
+    expect(out).toContain("安全扫描"); // 第 0 步:注入自查
+    expect(out).toContain("红线"); // 全委托也成立的操作型注入红线
     expect(out).toContain("交还控制权");
     expect(out).toContain("在用户回复前，不要修改任何文件");
   });
