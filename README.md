@@ -38,6 +38,7 @@ Try it right now with the bundled examples:
 ```bash
 preapp publish examples/q3-strategy-deck --title "Q3 Strategy" --slug demo-q3
 preapp publish examples/quarterly-report.html --title "Quarterly Report"
+preapp publish examples/market-analysis.md --title "Market Analysis"   # Markdown → Mermaid + math rendered server-side
 ```
 
 ## Why PreApp
@@ -124,7 +125,7 @@ Details: [docs/security.md](docs/security.md) · Reporting: [SECURITY.md](SECURI
 packages/cli/   the preapp CLI (TypeScript, single-file bundle via esbuild)
 skills/         per-harness skill files (generated from the CLI's single source)
 docs/           install, CLI, skills, HTTP protocol, feedback payload, security model
-examples/       publishable HTML artifacts to try immediately
+examples/       publishable HTML and Markdown artifacts to try immediately
 scripts/        install.sh mirror (audit) + smoke test
 ```
 
