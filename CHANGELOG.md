@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-07-10
+
+Native Markdown support — publish `.md` documents, not just HTML.
+
+- `preapp publish report.md` publishes a single Markdown file. The CLI discovers the local images the document actually references (normal / reference-style / safe inline `<img>`) via the Markdown AST and packs only those alongside the `.md` — unrelated files in the same directory are never uploaded. Missing images, `../` escapes, absolute paths, and symlinks fail the publish (exit 2) rather than shipping a broken version. Directories publish Markdown with an explicit `--entry report.md`.
+- The server renders Markdown once at publish time into fixed, sanitized HTML (viewers never re-render): CommonMark/GFM, front-matter stripped from the body, **Mermaid** diagrams rendered to inlined static SVG, and **KaTeX** math (`$…$`, `$$…$$`, and `math`/`latex`/`tex` fences). Write currency as `\$` to avoid it being parsed as math. DOT/PlantUML render as plain code blocks.
+- Feedback on Markdown carries the source location back to the `.md`: text/image/diagram targets include `source: {entry, startLine, endLine, headingPath}`, and the brief locator line reads e.g. `report.md:L42-L45 · section: …`. A new `diagram` target type covers Mermaid figures.
+- Publish response gains `sourceFormat` / `sourceHash` / `renderHash` / `rendererVersion`; `entry` is the source entry (the `.md` path for Markdown). `warnings` is now a structured `{code, message}[]` (was `string[]`) — e.g. `REMOTE_IMAGE_BLOCKED` (remote images are never proxied). New Markdown error codes (`MARKDOWN_TOO_LARGE`, `MERMAID_RENDER_FAILED`, `MATH_RENDER_FAILED`, `MISSING_LOCAL_ASSET`, …) carry `details: {sourceEntry, startLine, endLine, reason}` so an agent can jump straight to the offending line.
+- Markdown is served under a stricter CSP than arbitrary HTML artifacts (`script-src 'none'` for viewing; nonce-gated bridge for feedback), and the original `.md` is never exposed through the public capability URL.
+
 ## 0.2.3 — 2026-07-10
 
 Third round of feedback prompt-injection hardening (brief format + gate protocol + server-side flood control).

@@ -50,9 +50,9 @@ Agents can generate the work. They still need a clean way to put it in front of 
 
 PreApp adds exactly the missing loop:
 
-- **Static assets included** — publish a single HTML, a directory (auto-packed), or a zip.
+- **HTML or Markdown** — publish a single HTML, a single `.md` (Mermaid diagrams and KaTeX math rendered server-side), a directory (auto-packed), or a zip.
 - **View / feedback links** — clean reading vs. lightweight feedback, separate permissions.
-- **Feedback where the issue is** — select text or click an image; sections and whole-content feedback too.
+- **Feedback where the issue is** — select text, click an image or a Mermaid diagram; sections and whole-content feedback too. Markdown feedback maps back to the source `.md` line.
 - **Versions with stable links** — every publish is v1/v2/v3; the shared link always shows latest.
 - **Feedback payload for agents** — Markdown brief or JSON, with exact target locators.
 - **Visits** — know whether the share actually landed.
@@ -95,7 +95,7 @@ preapp login <agent-token>   # validates against the server before writing ~/.pr
 ## Commands
 
 ```text
-preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html]
+preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html|report.md]
                              [--change-note ...] [--anchors anchors.json]
                              [--feedback-mode off|detailed] [--format json|text]
 preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]

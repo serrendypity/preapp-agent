@@ -8,6 +8,7 @@ import { ConfigError, resolveConfig } from "./config.js";
 import { postPublish } from "./http.js";
 import type { ExitCode, Io } from "./io.js";
 import { packDirectory, UsageError } from "./pack.js";
+import { packMarkdownDocument } from "./pack-markdown.js";
 
 function resolvePath(cwd: string, p: string): string {
   return isAbsolute(p) ? p : join(cwd, p);
@@ -31,7 +32,8 @@ interface Artifact {
   entryField: string | undefined;
 }
 
-/** 单 HTML 直传；目录打包成 zip（entry 校验在打包内完成）。 */
+/** 单 HTML 直传；单 .md 走 AST 图片发现打成内存 zip（markdown-support-design §6.1，
+ * 与目录发布共用服务端校验管道）；目录打包成 zip（entry 校验在打包内完成，.md entry 亦可）。 */
 async function buildArtifact(
   target: string,
   entryFlag: string | undefined,
@@ -43,9 +45,13 @@ async function buildArtifact(
   }
   if (stat.isFile()) {
     const name = basename(target);
+    if (name.toLowerCase().endsWith(".md")) {
+      const packed = await packMarkdownDocument(target);
+      return { bytes: packed.zip, filename: "content.zip", entryField: packed.entryFile };
+    }
     if (!isHtml(name)) {
       throw new UsageError(
-        `single-file publish must be .html/.htm (got ${name}); pass a directory for other assets`,
+        `single-file publish must be .html/.htm or .md (got ${name}); pass a directory for other assets`,
       );
     }
     return { bytes: readFileSync(target), filename: name, entryField: entryFlag };
@@ -64,7 +70,11 @@ function summarize(json: Record<string, unknown>): string[] {
   const warnings = json.warnings;
   if (Array.isArray(warnings) && warnings.length > 0) {
     lines.push(`  warnings: ${warnings.length}`);
-    for (const w of warnings) lines.push(`    - ${String(w)}`);
+    for (const w of warnings) {
+      // 结构化 {code,message}（服务端 2026-07-10 起）；旧字符串形态兼容打印
+      const ww = w as { code?: string; message?: string };
+      lines.push(`    - ${ww && typeof ww === "object" && ww.code ? `[${ww.code}] ${ww.message ?? ""}` : String(w)}`);
+    }
   }
   return lines;
 }

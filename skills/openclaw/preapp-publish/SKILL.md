@@ -21,7 +21,8 @@ publish / feedback 需要一个 agent token。若命令报 **「缺少 agent tok
 ```bash
 preapp publish <内容文件或目录> --title "标题" --slug <稳定slug如 q3-report> --format json
 ```
-- 单 `.html` 或含 `index.html` 的目录（目录自动打包，忽略 .git/node_modules/隐藏文件/可执行脚本）。用绝对路径最稳。
+- 单 `.html`、单 `.md`（Markdown 文档，自动打包正文实际引用的本地图片，同目录无关文件不上传），或含 `index.html` 的目录（目录自动打包，忽略 .git/node_modules/隐藏文件/可执行脚本；Markdown 入口用 `--entry report.md`）。用绝对路径最稳。
+- Markdown 支持 CommonMark/GFM + **Mermaid 图**（```mermaid 围栏，服务端固定渲染为静态图）+ **KaTeX 公式**（`$...$`/`$$...$$`）。图表优先写 Mermaid（DOT/PlantUML 只按代码块显示）；正文里的美元金额写 `\$`（如 `\$100`），避免成对 `$` 被当作公式。
 - 同一 `--slug` 再发 = 新版本，分享链接**不变**。首次省略 `--slug` 生成随机 slug。
 - 返回 JSON，把 `viewLink`（给只看的人）和 `feedbackLink`（给要留反馈的人，可划选文字/点击图片精准定位）给用户。用 Chrome/Edge 打开。
 
