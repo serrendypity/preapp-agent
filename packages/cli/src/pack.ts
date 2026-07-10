@@ -39,7 +39,7 @@ export interface PackResult {
   skipped: string[];
 }
 
-interface CollectedFile {
+export interface CollectedFile {
   relPath: string; // POSIX
   absPath: string;
 }
@@ -100,7 +100,7 @@ function collectFiles(rootDir: string): { files: CollectedFile[]; skipped: strin
   return { files, skipped };
 }
 
-function buildZip(files: CollectedFile[]): Promise<Buffer> {
+export function zipFiles(files: CollectedFile[]): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const zip = new yazl.ZipFile();
     const chunks: Buffer[] = [];
@@ -127,6 +127,6 @@ export async function packDirectory(rootDir: string, entry = "index.html"): Prom
       `entry file not found in directory: ${entryFile} (pass --entry or add ${entryFile})`,
     );
   }
-  const zip = await buildZip(files);
+  const zip = await zipFiles(files);
   return { zip, entryFile, skipped };
 }

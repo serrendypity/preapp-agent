@@ -45,13 +45,13 @@ preapp publish ./dist \
   --format json
 ```
 
-Publishes a single `.html`/`.htm` file, or a directory (packed into a zip client-side). Passing a single file with any other extension is a usage error — put assets in a directory instead. To upload a pre-built zip, call the [HTTP API](api-protocol.md) directly.
+Publishes a single `.html`/`.htm` file, a single `.md` (Markdown, see below), or a directory (packed into a zip client-side). Passing a single file with any other extension is a usage error — put assets in a directory instead. To upload a pre-built zip, call the [HTTP API](api-protocol.md) directly.
 
 | Flag | Description |
 | --- | --- |
 | `--title <text>` | Content title. Required when creating a new content item. |
 | `--slug <id-or-slug>` | Publish a new version of an existing content item. Omit to create a new one with a random slug. |
-| `--entry <path>` | Entry file inside the artifact. Directory default: `index.html` (must exist after packing, or exit 2). Single-file default: the file itself. |
+| `--entry <path>` | Entry file inside the artifact (`.html/.htm` or `.md`). Directory default: `index.html` (must exist after packing, or exit 2). Single-file default: the file itself. Publish a directory of Markdown with `--entry report.md`. |
 | `--description <text>` | Human-readable content description. |
 | `--change-note <text>` | Version note, shown alongside the version. |
 | `--anchors <file.json>` | JSON array of review anchors, sent as `feedbackAnchors` (see [api-protocol.md](api-protocol.md#review-anchors)). |
@@ -70,6 +70,12 @@ Directories are zipped in memory with a client-side denylist. Skipped, never upl
 - executable and server-script extensions (`php`, `py`, `rb`, `pl`, `cgi`, `jsp`, `asp`, `sh`, `bat`, `ps1`, `exe`, `dll`, `so`, `jar`, and similar)
 
 The server independently re-validates every upload with its own authoritative rules, so the denylist is a convenience, not the security boundary.
+
+### Markdown documents
+
+`preapp publish report.md` publishes a single Markdown document. The CLI parses the Markdown AST to find the local images the document actually references — normal `![](path)`, reference-style, and safe inline `<img src>` — and packs **only** the `.md` plus those images into a zip (unrelated files in the same folder are never uploaded). Image paths must resolve inside the Markdown's own directory: `../` escapes, absolute paths, symlinks, and missing files fail the publish (exit 2) with the offending reference named. `http(s)` images are left as-is (the server blocks remote images at render time). To reference assets outside the document's folder, publish a directory with `--entry report.md` instead.
+
+The server renders Markdown once at publish time (viewers never re-render): CommonMark/GFM, front-matter stripped from the body, **Mermaid** fenced blocks → inlined static SVG, and **KaTeX** math (`$…$`, `$$…$$`, `math`/`latex`/`tex` fences). Write literal currency as `\$` so a pair of `$` on one line isn't parsed as math. DOT/PlantUML render as plain code blocks — prefer Mermaid for diagrams. A render failure (bad Mermaid/KaTeX, missing image, oversized input) fails the whole publish with `details.startLine`/`endLine` pointing at the source, and no version is created. See [feedback-payload.md](feedback-payload.md) for the Markdown source locators returned with feedback.
 
 ### Idempotency and retries
 

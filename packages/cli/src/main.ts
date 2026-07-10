@@ -13,7 +13,7 @@ import { runSkillInstall } from "./skill.js";
 const HELP = `preapp — 把 agent 生成的内容分享给人看,收集反馈,再带回 agent
 
 usage:
-  preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html]
+  preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html|report.md]
                                [--description ...] [--change-note ...] [--anchors anchors.json]
                                [--feedback-mode off|detailed] [--format json|text]
   preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
