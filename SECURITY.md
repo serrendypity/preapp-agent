@@ -4,7 +4,7 @@
 
 Please **do not** open a public issue for security problems.
 
-Email **security@preapp.app** (or eason.zhou@gmail.com) with:
+Email **security@preapp.app** with:
 
 - a description of the issue and its impact,
 - reproduction steps or a proof of concept,
