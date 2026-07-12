@@ -4,7 +4,7 @@
 
 把 agent 生成的内容分享给人看,收集反馈,再带回 agent 生成下一版。
 
-Agent 已经很擅长生成内容——报告、文档、HTML PPT、网页化材料。PreApp 补齐最后一公里:**分享出去、收集反馈、带回下一轮 agent 运行。**
+Agent 已经很擅长生成内容——Markdown 文档和 HTML PPT，从报告到演示稿都算。PreApp 补齐最后一公里:**分享出去、收集反馈、带回下一轮 agent 运行。**
 
 ```text
 agent publish → 分享链接 → 人类反馈 → agent 读取反馈 → agent 发布 v2

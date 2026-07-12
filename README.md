@@ -4,7 +4,7 @@
 
 Share agent-generated work with people, collect feedback, and bring it back to your agent.
 
-Agents are good at generating work products — reports, docs, HTML slides, web pages. PreApp handles the last mile: **share it, collect feedback, and feed it back into the next agent run.**
+Agents are good at generating work products — Markdown documents and HTML slides, from reports to slide decks. PreApp handles the last mile: **share it, collect feedback, and feed it back into the next agent run.**
 
 ```text
 agent publish → share links → human feedback → agent feedback read → agent publish v2

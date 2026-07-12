@@ -4,7 +4,7 @@
 
 Comparte el trabajo generado por tu agente, recoge feedback y devuélvelo al agente.
 
-Los agents ya son buenos generando entregables: informes, documentos, diapositivas HTML, páginas web. PreApp cubre la última milla: **compártelo, recoge feedback y devuélvelo a la siguiente ejecución del agent.**
+Los agents ya son buenos generando entregables: documentos Markdown y diapositivas HTML, de informes a presentaciones. PreApp cubre la última milla: **compártelo, recoge feedback y devuélvelo a la siguiente ejecución del agent.**
 
 ```text
 agent publish → enlaces compartidos → feedback humano → agent lee el feedback → agent publica v2
