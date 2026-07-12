@@ -4,7 +4,7 @@
 
 agent가 만든 결과물을 사람들과 공유하고, 피드백을 모아 다시 agent에게 전달하세요.
 
-Agent는 이제 결과물을 잘 만듭니다 — 리포트, 문서, HTML 슬라이드, 웹 페이지. PreApp은 마지막 구간을 책임집니다: **공유하고, 피드백을 모으고, 다음 agent 실행에 넘기기.**
+Agent는 이제 결과물을 잘 만듭니다 — Markdown 문서와 HTML 슬라이드, 리포트부터 슬라이드 덱까지. PreApp은 마지막 구간을 책임집니다: **공유하고, 피드백을 모으고, 다음 agent 실행에 넘기기.**
 
 ```text
 agent publish → 공유 링크 → 사람이 피드백 → agent가 피드백 읽기 → agent가 v2 publish
