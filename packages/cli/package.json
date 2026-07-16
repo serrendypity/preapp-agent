@@ -1,6 +1,6 @@
 {
   "name": "@preapp/cli",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Agent-first CLI for PreApp: publish AI-generated HTML decks/reports, share review links, and pull human feedback back into coding agents.",
   "license": "MIT",
   "homepage": "https://github.com/serrendypity/preapp-agent#readme",
@@ -41,10 +41,12 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "mdast-util-from-markdown": "2.0.3",
     "mdast-util-gfm": "3.1.0",
     "micromark-extension-gfm": "3.0.0",
-    "yazl": "^3.3.1"
+    "yazl": "^3.3.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

@@ -10,7 +10,7 @@ Agents are good at generating work products — Markdown documents and HTML slid
 agent publish → share links → human feedback → agent feedback read → agent publish v2
 ```
 
-This repo contains the agent integration layer for [preapp.app](https://preapp.app): the `preapp` CLI, agent skill recipes (Claude Code / Codex / OpenClaw / Hermes), protocol docs, and publishable examples. The hosted service itself is not in this repo.
+This repo contains the agent integration layer for [preapp.app](https://preapp.app): the `preapp` CLI, a stdio MCP server (`preapp mcp`), agent skill recipes (Claude Code / Codex / OpenClaw / Hermes), protocol docs, and publishable examples. The hosted service itself is not in this repo.
 
 ## 30-second demo
 
@@ -92,8 +92,9 @@ preapp login <agent-token>   # validates against the server before writing ~/.pr
 | OpenClaw | conventional skill path, `--dir` override |
 | Hermes | conventional skill path, `--dir` override |
 | Cursor / anything with a shell | tell the agent to run the `preapp` CLI |
+| Claude Desktop / any MCP client | `preapp mcp` (stdio MCP server) — see [docs/mcp.md](docs/mcp.md) |
 
-> PreApp ships a CLI and agent skill recipes. Claude Code is supported first; Codex/OpenClaw/Hermes recipes are open for community hardening — [PRs welcome](CONTRIBUTING.md).
+> PreApp ships a CLI, an MCP server, and agent skill recipes. Claude Code is supported first; Codex/OpenClaw/Hermes recipes are open for community hardening — [PRs welcome](CONTRIBUTING.md).
 
 ## Commands
 
@@ -107,9 +108,10 @@ preapp revision get <share-url | content-id-or-slug> [--version N] [--format mar
 preapp revision save <share-url | content-id-or-slug> [--version N] --file <revision.json|-> [--ready]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
+preapp mcp                                     # stdio MCP server (publish / feedback / revision tools)
 ```
 
-Full reference: [docs/cli.md](docs/cli.md) · Protocol: [docs/api-protocol.md](docs/api-protocol.md) · Feedback payload: [docs/feedback-payload.md](docs/feedback-payload.md)
+Full reference: [docs/cli.md](docs/cli.md) · MCP: [docs/mcp.md](docs/mcp.md) · Protocol: [docs/api-protocol.md](docs/api-protocol.md) · Feedback payload: [docs/feedback-payload.md](docs/feedback-payload.md)
 
 ### The two-stage feedback gate
 
@@ -129,7 +131,7 @@ Details: [docs/security.md](docs/security.md) · Reporting: [SECURITY.md](SECURI
 ```text
 packages/cli/   the preapp CLI (TypeScript, single-file bundle via esbuild)
 skills/         per-harness skill files (generated from the CLI's single source)
-docs/           install, CLI, skills, HTTP protocol, feedback payload, security model
+docs/           install, CLI, MCP, skills, HTTP protocol, feedback payload, security model
 examples/       publishable HTML and Markdown artifacts to try immediately
 scripts/        install.sh mirror (audit) + smoke test
 ```

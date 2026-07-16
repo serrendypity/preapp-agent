@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 — 2026-07-16
+
+**MCP server** — PreApp's fourth agent entry point (CLI / HTTP API / skill / MCP).
+
+- `preapp mcp` runs a stdio MCP server exposing four tools that behave exactly like the CLI commands they wrap: `preapp_publish`, `preapp_feedback_get`, `preapp_revision_get`, `preapp_revision_save`. Any MCP client works — Claude Code (`claude mcp add preapp -- preapp mcp`), Claude Desktop, Codex, etc. See [docs/mcp.md](docs/mcp.md).
+- Credentials resolve the same way as the CLI (`PREAPP_TOKEN` / `PREAPP_URL` env, then `~/.preapp/config.json` via `preapp login`); tools never accept a token as input.
+- The prompt-injection defenses travel with the tools: feedback/revision results carry the same untrusted-data markers and the two-stage gate text as the CLI output (including when requesting `format: "json"`).
+- Revision saves keep the same optimistic-concurrency contract: stale `baseEditSequence` → 409 with the current sequence, never a silent overwrite.
+
 ## 0.4.1 — 2026-07-16
 
 Contract tightening and scope clarification for the interactive-HTML advanced feedback mode (no CLI code changes; server-side enforcement plus docs/skill updates).

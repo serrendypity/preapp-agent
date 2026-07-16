@@ -89,8 +89,9 @@ preapp login <agent-token>   # ~/.preapp/config.json に書く前にサーバー
 | OpenClaw | 慣例パス、`--dir` で上書き可 |
 | Hermes | 慣例パス、`--dir` で上書き可 |
 | Cursor / shell が使える agent | agent に `preapp` CLI を実行させる |
+| Claude Desktop / 任意の MCP クライアント | `preapp mcp`(stdio MCP server)——[docs/mcp.md](docs/mcp.md) 参照 |
 
-> PreApp は CLI と agent skill レシピを提供します。Claude Code を最初にサポート;Codex/OpenClaw/Hermes のレシピはコミュニティでの改善を歓迎——[PR はこちら](CONTRIBUTING.md)。
+> PreApp は CLI、MCP server、agent skill レシピを提供します。Claude Code を最初にサポート;Codex/OpenClaw/Hermes のレシピはコミュニティでの改善を歓迎——[PR はこちら](CONTRIBUTING.md)。
 
 ## コマンド
 
@@ -101,9 +102,10 @@ preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.
 preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
+preapp mcp                                     # stdio MCP server(publish / feedback / revision ツール)
 ```
 
-完全なリファレンス:[docs/cli.md](docs/cli.md) · プロトコル:[docs/api-protocol.md](docs/api-protocol.md) · フィードバックペイロード:[docs/feedback-payload.md](docs/feedback-payload.md)
+完全なリファレンス:[docs/cli.md](docs/cli.md) · MCP:[docs/mcp.md](docs/mcp.md) · プロトコル:[docs/api-protocol.md](docs/api-protocol.md) · フィードバックペイロード:[docs/feedback-payload.md](docs/feedback-payload.md)
 
 ### 二段階フィードバックゲート
 
