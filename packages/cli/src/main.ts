@@ -10,6 +10,7 @@ import { runFeedback } from "./feedback.js";
 import { runRevisionGet, runRevisionSave } from "./revision.js";
 import { runLogin } from "./login.js";
 import { runSkillInstall } from "./skill.js";
+import { runMcp } from "./mcp.js";
 
 const HELP = `preapp — 把 agent 生成的内容分享给人看,收集反馈,再带回 agent
 
@@ -23,6 +24,7 @@ usage:
   preapp revision save <share-url | content-id-or-slug> [--version N] --file <revision.json|-> [--ready]
   preapp login <token> [--base-url <url>]        # 写入凭证到 ~/.preapp/config.json（装完后一次）
   preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
+  preapp mcp                                     # stdio MCP server（publish / feedback / revision 四个 tool）
 
 config (优先级)：--token/--base-url  >  PREAPP_TOKEN/PREAPP_URL  >  ~/.preapp/config.json`;
 
@@ -64,6 +66,9 @@ export async function run(argv: string[], io: Omit<Io, "argv">): Promise<ExitCod
   }
   if (cmd === "login") {
     return runLogin({ ...base, argv: rest });
+  }
+  if (cmd === "mcp") {
+    return runMcp({ ...base, argv: rest });
   }
   if (cmd === "skill") {
     if (rest[0] !== "install") {

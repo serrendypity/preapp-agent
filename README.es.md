@@ -89,8 +89,9 @@ preapp login <agent-token>   # valida contra el servidor antes de escribir ~/.pr
 | OpenClaw | ruta convencional, redefinible con `--dir` |
 | Hermes | ruta convencional, redefinible con `--dir` |
 | Cursor / cualquier agent con shell | indica al agent que ejecute la CLI `preapp` |
+| Claude Desktop / cualquier cliente MCP | `preapp mcp` (servidor MCP por stdio) — ver [docs/mcp.md](docs/mcp.md) |
 
-> PreApp ofrece una CLI y recetas de skills para agents. Claude Code es el primero en soportarse; las recetas de Codex/OpenClaw/Hermes están abiertas a mejoras de la comunidad — [PRs bienvenidos](CONTRIBUTING.md).
+> PreApp ofrece una CLI, un servidor MCP y recetas de skills para agents. Claude Code es el primero en soportarse; las recetas de Codex/OpenClaw/Hermes están abiertas a mejoras de la comunidad — [PRs bienvenidos](CONTRIBUTING.md).
 
 ## Comandos
 
@@ -101,9 +102,10 @@ preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.
 preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
+preapp mcp                                     # servidor MCP por stdio (herramientas de publish / feedback / revision)
 ```
 
-Referencia completa: [docs/cli.md](docs/cli.md) · Protocolo: [docs/api-protocol.md](docs/api-protocol.md) · Payload de feedback: [docs/feedback-payload.md](docs/feedback-payload.md)
+Referencia completa: [docs/cli.md](docs/cli.md) · MCP: [docs/mcp.md](docs/mcp.md) · Protocolo: [docs/api-protocol.md](docs/api-protocol.md) · Payload de feedback: [docs/feedback-payload.md](docs/feedback-payload.md)
 
 ### La puerta de feedback en dos etapas
 

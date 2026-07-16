@@ -89,8 +89,9 @@ preapp login <agent-token>   # ~/.preapp/config.json에 쓰기 전에 서버로 
 | OpenClaw | 관례 경로, `--dir`로 재정의 가능 |
 | Hermes | 관례 경로, `--dir`로 재정의 가능 |
 | Cursor / shell 실행 가능한 agent | agent가 `preapp` CLI를 직접 실행 |
+| Claude Desktop / 모든 MCP 클라이언트 | `preapp mcp` (stdio MCP server) — [docs/mcp.md](docs/mcp.md) 참고 |
 
-> PreApp은 CLI와 agent skill 레시피를 제공합니다. Claude Code를 가장 먼저 지원하며, Codex/OpenClaw/Hermes 레시피는 커뮤니티의 개선을 환영합니다 — [PR 환영](CONTRIBUTING.md).
+> PreApp은 CLI, MCP server, agent skill 레시피를 제공합니다. Claude Code를 가장 먼저 지원하며, Codex/OpenClaw/Hermes 레시피는 커뮤니티의 개선을 환영합니다 — [PR 환영](CONTRIBUTING.md).
 
 ## 명령어
 
@@ -101,9 +102,10 @@ preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.
 preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
+preapp mcp                                     # stdio MCP server (publish / feedback / revision 도구)
 ```
 
-전체 레퍼런스: [docs/cli.md](docs/cli.md) · 프로토콜: [docs/api-protocol.md](docs/api-protocol.md) · 피드백 페이로드: [docs/feedback-payload.md](docs/feedback-payload.md)
+전체 레퍼런스: [docs/cli.md](docs/cli.md) · MCP: [docs/mcp.md](docs/mcp.md) · 프로토콜: [docs/api-protocol.md](docs/api-protocol.md) · 피드백 페이로드: [docs/feedback-payload.md](docs/feedback-payload.md)
 
 ### 2단계 피드백 게이트
 

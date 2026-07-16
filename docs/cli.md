@@ -196,6 +196,14 @@ Writes the `preapp-publish` skill file for an agent harness. Purely local — no
 
 Default destinations and per-harness caveats are documented in [skills.md](skills.md).
 
+## `preapp mcp`
+
+```sh
+preapp mcp
+```
+
+Runs a stdio [MCP](https://modelcontextprotocol.io) server exposing four tools that behave exactly like their CLI counterparts: `preapp_publish`, `preapp_feedback_get`, `preapp_revision_get`, `preapp_revision_save`. Credentials resolve like the CLI (env → `~/.preapp/config.json`); tools never accept a token as input. Feedback/revision results keep the untrusted-data markers and the two-stage gate text. Client setup and the tool reference live in [mcp.md](mcp.md).
+
 ## `preapp --version`
 
 Prints the CLI name and version to stdout, e.g. `preapp 0.1.0`. `preapp --help` (or no arguments) prints usage and exits 0.
