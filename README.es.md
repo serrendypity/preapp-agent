@@ -96,10 +96,13 @@ preapp login <agent-token>   # valida contra el servidor antes de escribir ~/.pr
 ## Comandos
 
 ```text
-preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html]
+preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html|report.md]
                              [--change-note ...] [--anchors anchors.json]
-                             [--feedback-mode off|detailed] [--format json|text]
+                             [--feedback-mode off|detailed] [--review-profile standard|prototype]
+                             [--revision <rbr_id> --revision-sequence <n>] [--format json|text]
 preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
+preapp revision get <share-url | content-id-or-slug> [--version N] [--format markdown|json]
+preapp revision save <share-url | content-id-or-slug> [--version N] --file <revision.json|-> [--ready]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
 preapp mcp                                     # servidor MCP por stdio (herramientas de publish / feedback / revision)
