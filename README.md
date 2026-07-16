@@ -12,6 +12,10 @@ agent publish → share links → human feedback → agent feedback read → age
 
 This repo contains the agent integration layer for [preapp.app](https://preapp.app): the `preapp` CLI, a stdio MCP server (`preapp mcp`), agent skill recipes (Claude Code / Codex / OpenClaw / Hermes), protocol docs, and publishable examples. The hosted service itself is not in this repo.
 
+[![A real PreApp feedback loop: human feedback returned to the agent](docs/media/preapp-dogfood-poster.png)](https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-case.mp4)
+
+> **A real run** ([▶ watch, 41s, no audio](https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-case.mp4)): a reviewer left feedback on the exact HTML state, the owner curated a revision brief, and the agent published the next version on the same link. **4 versions · 2 review loops · 6 feedback items · 2 applied briefs.**
+
 ## 30-second demo
 
 ```bash
