@@ -33,6 +33,8 @@ preapp feedback get q3-strategy --format markdown
 
 The agent gets an **Agent Feedback Brief** — feedback items with precise locators — and publishes v2 to the **same links**.
 
+Interactive **product prototypes** get their own loop: publish with `--review-profile prototype`, reviewers experience the prototype and click any element to comment, the owner curates feedback into a revision brief, and the agent pulls it with `preapp revision get` and republishes with `--revision` for full traceability.
+
 Try it right now with the bundled examples:
 
 ```bash
@@ -98,8 +100,11 @@ preapp login <agent-token>   # validates against the server before writing ~/.pr
 ```text
 preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html|report.md]
                              [--change-note ...] [--anchors anchors.json]
-                             [--feedback-mode off|detailed] [--format json|text]
+                             [--feedback-mode off|detailed] [--review-profile standard|prototype]
+                             [--revision <rbr_id> --revision-sequence <n>] [--format json|text]
 preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
+preapp revision get <share-url | content-id-or-slug> [--version N] [--format markdown|json]
+preapp revision save <share-url | content-id-or-slug> [--version N] --file <revision.json|-> [--ready]
 preapp login <token> [--base-url <url>]
 preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
 ```

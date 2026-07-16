@@ -61,3 +61,13 @@ export async function getJson(url: string, token: string): Promise<HttpResponse>
   });
   return { status: res.status, bodyText: await res.text() };
 }
+
+/** revision brief upsert（prototype-prd §15.4）。无重试：CAS 语义下盲重试可能撞 409，交给上层决策。 */
+export async function putJson(url: string, token: string, body: unknown): Promise<HttpResponse> {
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return { status: res.status, bodyText: await res.text() };
+}

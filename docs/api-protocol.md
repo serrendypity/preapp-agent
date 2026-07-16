@@ -56,6 +56,9 @@ Content-Type: multipart/form-data
 | `changeNote` | no | Version note. |
 | `feedbackAnchors` | no | JSON array of review anchors (below). |
 | `feedbackMode` | no | `off` or `detailed` (default `detailed`). |
+| `reviewProfile` | no | `standard` \| `prototype`. Marks an HTML artifact as an interactive product prototype (element-level feedback + owner review board). New HTML versions inherit the previous version's profile; Markdown is always `standard` (explicit `prototype` → `422 invalid_review_profile`). |
+| `revisionBriefId` | no | `rbr_…` — apply a **ready** revision brief atomically with this publish (see *Revision brief* below). The brief must belong to this content and its source version must be the direct previous version. |
+| `revisionBriefEditSequence` | with `revisionBriefId` | The `editSequence` read alongside the brief. Stale value → `409 revision_changed` (re-read and reconcile). |
 
 ### Accepted artifact shapes
 
@@ -101,10 +104,14 @@ Inheritance across versions: **omit the field** and the new version copies the p
   "feedbackLink": "https://preapp.app/s/q3-strategy/feedback?token=review_xxx",
   "versionLink": "https://preapp.app/s/q3-strategy/v/1?token=view_xxx",
   "feedbackCommand": "preapp feedback get https://preapp.app/s/q3-strategy --format markdown",
+  "reviewProfile": "standard",
+  "ownerReviewLink": null,
   "createdAt": "2026-07-03T04:00:00Z",
   "warnings": ["external resource: https://cdn.example.com/font.css"]
 }
 ```
+
+`reviewProfile` is always present; for `prototype` versions `ownerReviewLink` points at the owner's review board (`…/dashboard/c/{slug}/review?version={n}`, owner sign-in required), otherwise `null`. When the publish carried `revisionBriefId`, the response also includes `"revisionBrief": {"id", "state": "applied", "editSequenceBefore", "editSequenceAfter"}`.
 
 `warnings` is present only when non-empty (e.g. stripped junk entries, external resources — allowed but flagged). `feedbackCommand` is a ready-to-run CLI command assuming the CLI is configured.
 
@@ -147,6 +154,17 @@ curl -X POST https://preapp.app/api/contents/publish \
 | `422` | Content rules violated: missing entry file, path traversal, symlink entry, hidden file, executable, server script, unpacked size over limit, reserved `__preapp/` prefix, or invalid anchor JSON. |
 | `503` | Artifact storage temporarily unavailable. Retry with the **same** `Idempotency-Key`. |
 
+Prototype / revision-brief errors (validation failures roll back the whole publish — no version is created, `latest` and the brief are untouched):
+
+| Code | `error` | Meaning |
+| --- | --- | --- |
+| `422` | `invalid_review_profile` | Markdown with an explicit `reviewProfile=prototype`. |
+| `422` | `revision_content_mismatch` | The brief belongs to a different content item. |
+| `422` | `revision_source_mismatch` | The brief's source version is not the direct previous version. |
+| `409` | `revision_already_applied` | The brief was already used by another version. |
+| `409` | `revision_not_ready` | The brief is still a draft — mark it ready first. |
+| `409` | `revision_changed` | `revisionBriefEditSequence` is stale (response carries `currentEditSequence`). Re-read the brief, reconcile, retry. |
+
 ## `GET /api/contents/{contentOrVersion}/feedback`
 
 Read the structured feedback for one version. `{contentOrVersion}` accepts a content item id or slug (combine with `?version=N`, default latest), or a `ver_`-prefixed version id (pins that exact version).
@@ -170,3 +188,16 @@ Both formats render the same source data; the full shape, field-by-field, is doc
 | `401` | Missing/invalid agent token (review and view tokens cannot call this API). |
 | `403` | Valid agent token, but the content belongs to another account. |
 | `404` | Unknown content item, unknown version number, or malformed version segment. |
+
+## `GET/PUT /api/contents/{contentOrVersion}/revision-brief`
+
+The revision brief is the owner-curated change list for one prototype **source version** (at most one per version). Auth: the owner's **agent token** or the owner's signed-in session — view/review tokens get `401`, non-owners `403`. The web review board and the agent edit the same brief; every write is guarded by `editSequence` compare-and-swap.
+
+```http
+GET /api/contents/q3-prototype/revision-brief?version=1&format=markdown
+PUT /api/contents/q3-prototype/revision-brief?version=1
+```
+
+- `GET` — `format=json` returns `{revisionBrief: {id, content, sourceVersion{id, number, reviewProfile}, state (draft|ready|applied), editSequence, items[{id, instruction, sortOrder, feedbackIds, sourceFeedback[]}], appliedVersion, createdVia, lastEditedVia, …}, safetyNote}`. `format=markdown` renders the agent brief with owner-curated **Changes** separated from untrusted **Source Feedback** (each reviewer original quoted exactly once). `404` = no brief curated for that version yet. Agent-token reads are logged as `payload_type=revision` pull events.
+- `PUT` — creates or **fully replaces** the brief: `{baseEditSequence, state (draft|ready), items:[{instruction, feedbackIds?}]}`. First create requires `baseEditSequence: 0`; updates must send the current value (mismatch → `409 revision_conflict` with `currentEditSequence` — never overwritten silently). `applied` briefs are immutable. Limits: ≤100 items, `instruction` 1–1000 chars (whitespace-normalized), ≤20 feedback ids per item (must belong to the source version → `422 feedback_version_mismatch`), body ≤256 KB. An empty item list cannot be marked `ready`.
+- Applying a brief happens through `POST /api/contents/publish` with `revisionBriefId` + `revisionBriefEditSequence` (see Publish above): the new version records the brief, the brief becomes `applied`, all in one transaction.

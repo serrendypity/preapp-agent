@@ -7,6 +7,7 @@ import { pathToFileURL } from "node:url";
 import type { ExitCode, Io } from "./io.js";
 import { runPublish } from "./publish.js";
 import { runFeedback } from "./feedback.js";
+import { runRevisionGet, runRevisionSave } from "./revision.js";
 import { runLogin } from "./login.js";
 import { runSkillInstall } from "./skill.js";
 
@@ -15,8 +16,11 @@ const HELP = `preapp — 把 agent 生成的内容分享给人看,收集反馈,�
 usage:
   preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html|report.md]
                                [--description ...] [--change-note ...] [--anchors anchors.json]
-                               [--feedback-mode off|detailed] [--format json|text]
+                               [--feedback-mode off|detailed] [--review-profile standard|prototype]
+                               [--revision <rbr_id> --revision-sequence <n>] [--format json|text]
   preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
+  preapp revision get <share-url | content-id-or-slug> [--version N] [--format markdown|json]
+  preapp revision save <share-url | content-id-or-slug> [--version N] --file <revision.json|-> [--ready]
   preapp login <token> [--base-url <url>]        # 写入凭证到 ~/.preapp/config.json（装完后一次）
   preapp skill install --harness <claude-code|codex|openclaw|hermes> [--dir <path>] [--force]
 
@@ -48,6 +52,15 @@ export async function run(argv: string[], io: Omit<Io, "argv">): Promise<ExitCod
       return 2;
     }
     return runFeedback({ ...base, argv: rest.slice(1) });
+  }
+  if (cmd === "revision") {
+    if (rest[0] === "get") return runRevisionGet({ ...base, argv: rest.slice(1) });
+    if (rest[0] === "save") return runRevisionSave({ ...base, argv: rest.slice(1) });
+    io.stderr(
+      "usage: preapp revision get <target> [--version N] [--format markdown|json]\n" +
+        "       preapp revision save <target> [--version N] --file <revision.json|-> [--ready]",
+    );
+    return 2;
   }
   if (cmd === "login") {
     return runLogin({ ...base, argv: rest });

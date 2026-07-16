@@ -7,13 +7,13 @@ import { ConfigError, resolveConfig } from "./config.js";
 import { getJson } from "./http.js";
 import type { ExitCode, Io } from "./io.js";
 
-interface Target {
+export interface Target {
   contentIdOrSlug: string;
   versionSegment: string; // 版本号或 "latest"
 }
 
-/** 解析分享 URL（/s/{slug} 或 /s/{slug}/v/{n}）或裸 id/slug。 */
-function parseTarget(raw: string, versionFlag: string | undefined): Target | null {
+/** 解析分享 URL（/s/{slug} 或 /s/{slug}/v/{n}）或裸 id/slug（feedback 与 revision 共用）。 */
+export function parseContentTarget(raw: string, versionFlag: string | undefined): Target | null {
   if (/^https?:\/\//i.test(raw)) {
     let url: URL;
     try {
@@ -48,7 +48,7 @@ export async function runFeedback(io: Io): Promise<ExitCode> {
     return 2;
   }
 
-  const target = parseTarget(targetArg, flagValue(flags, "version"));
+  const target = parseContentTarget(targetArg, flagValue(flags, "version"));
   if (!target) {
     io.stderr(`could not parse content target: ${targetArg}`);
     return 2;
