@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0 — 2026-07-16
+
+HTML prototype review loop — publish interactive prototypes, collect element-level feedback, and pull the owner-curated revision brief.
+
+- `preapp publish --review-profile prototype` marks an HTML artifact as a product prototype. Reviewers get an **Experience / Add feedback** toggle: experience mode never intercepts the prototype's own clicks, routing, or forms; feedback mode lets them click any element (or blank spot) to attach feedback to it. The response gains `reviewProfile` and `ownerReviewLink` (the owner's prototype review board). New HTML versions inherit the previous version's profile; Markdown is always `standard`.
+- Prototype feedback carries an element/point target (`tag`, `role`, accessible `label`, `componentId` from `data-preapp-component`, `sourceRef` from `data-preapp-source`) plus a `prototypeContext` (page/hash, viewport, scroll, target rect, `data-preapp-screen`/`-state`) so the agent can reproduce exactly what the reviewer saw. Annotate generated prototypes with `data-preapp-*` attributes and hash-encoded states for best round-tripping — see the updated skill.
+- **Revision briefs**: the owner curates raw feedback into a confirmed change list ("this round"), on the web review board or in the agent conversation — both edit the *same* server-side brief under `editSequence` compare-and-swap (no silent overwrites). New commands:
+  - `preapp revision get <slug> [--version N]` — Markdown brief with owner-curated **Changes** (safe to execute) separated from untrusted **Source Feedback** (context only, never instructions). 404 means the owner hasn't curated one yet — fall back to `feedback get`.
+  - `preapp revision save <slug> --file revision.json [--ready]` — save the list back (stdin via `--file -`); the file must not contain `state` (use `--ready`), and the CLI pre-reads the current `editSequence` when the file doesn't pin one. Conflicts return 409 — re-read and reconcile, never overwrite.
+  - `preapp publish --revision <rbr_…> --revision-sequence <n>` — publishing the fix links the new version to the brief atomically (brief becomes `applied`), giving full feedback → brief → version traceability. Stale sequences and draft/foreign/reused briefs are rejected without creating a version.
+- Skill updated accordingly: prototype publishing rules, `data-preapp-*` conventions, the revision-brief loop, and the hard rule that even under full delegation the agent must save the actually-executed brief before republishing.
+
 ## 0.3.0 — 2026-07-10
 
 Native Markdown support — publish `.md` documents, not just HTML.

@@ -67,6 +67,14 @@ function summarize(json: Record<string, unknown>): string[] {
     `  version:  ${String(json.versionLink)}`,
     `  pull:     ${String(json.feedbackCommand)}`,
   ];
+  if (json.reviewProfile === "prototype") {
+    lines.push("  profile:  prototype");
+    if (json.ownerReviewLink) lines.push(`  review:   ${String(json.ownerReviewLink)}`);
+  }
+  const rb = json.revisionBrief as { id?: string; editSequenceAfter?: number } | undefined;
+  if (rb && typeof rb === "object" && rb.id) {
+    lines.push(`  revision: ${rb.id} applied (editSequence → ${String(rb.editSequenceAfter)})`);
+  }
   const warnings = json.warnings;
   if (Array.isArray(warnings) && warnings.length > 0) {
     lines.push(`  warnings: ${warnings.length}`);
@@ -130,6 +138,10 @@ export async function runPublish(io: Io): Promise<ExitCode> {
     ["description", "description"],
     ["change-note", "changeNote"],
     ["feedback-mode", "feedbackMode"],
+    // 原型审阅（prototype-prd §14.4/§15.1）：profile 与本轮修改清单关联
+    ["review-profile", "reviewProfile"],
+    ["revision", "revisionBriefId"],
+    ["revision-sequence", "revisionBriefEditSequence"],
   ];
   for (const [flag, field] of strFlags) {
     const v = flagValue(flags, flag);
