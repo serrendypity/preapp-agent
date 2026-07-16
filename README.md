@@ -33,7 +33,7 @@ preapp feedback get q3-strategy --format markdown
 
 The agent gets an **Agent Feedback Brief** — feedback items with precise locators — and publishes v2 to the **same links**.
 
-Interactive **product prototypes** get their own loop: publish with `--review-profile prototype`, reviewers experience the prototype and click any element to comment, the owner curates feedback into a revision brief, and the agent pulls it with `preapp revision get` and republishes with `--revision` for full traceability.
+**Interactive HTML gets an advanced feedback mode** (product prototypes, hash-routed SPAs): publish with `--review-profile prototype`, reviewers experience the prototype and click any element to comment, the owner curates feedback into a revision brief, and the agent pulls it with `preapp revision get` and republishes with `--revision` for full traceability. Reports, documents, and HTML decks stay on the regular flow — this mode is an extra gear, not a repositioning.
 
 Try it right now with the bundled examples:
 

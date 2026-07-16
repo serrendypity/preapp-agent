@@ -164,6 +164,7 @@ Prototype / revision-brief errors (validation failures roll back the whole publi
 | `409` | `revision_already_applied` | The brief was already used by another version. |
 | `409` | `revision_not_ready` | The brief is still a draft — mark it ready first. |
 | `409` | `revision_changed` | `revisionBriefEditSequence` is stale (response carries `currentEditSequence`). Re-read the brief, reconcile, retry. |
+| `422` | `revision_requires_prototype` | Publishing with a brief must keep the new version `prototype` (an explicit `standard` or Markdown is rejected). |
 
 ## `GET /api/contents/{contentOrVersion}/feedback`
 
@@ -192,6 +193,8 @@ Both formats render the same source data; the full shape, field-by-field, is doc
 ## `GET/PUT /api/contents/{contentOrVersion}/revision-brief`
 
 The revision brief is the owner-curated change list for one prototype **source version** (at most one per version). Auth: the owner's **agent token** or the owner's signed-in session — view/review tokens get `401`, non-owners `403`. The web review board and the agent edit the same brief; every write is guarded by `editSequence` compare-and-swap.
+
+**Prototype-only**: revision briefs are part of the advanced feedback mode for **interactive HTML** — GET/PUT on a `standard` HTML or Markdown version returns `422 revision_requires_prototype`. Reports, documents, and HTML decks use the regular feedback flow.
 
 ```http
 GET /api/contents/q3-prototype/revision-brief?version=1&format=markdown

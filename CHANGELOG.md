@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.1 — 2026-07-16
+
+Contract tightening and scope clarification for the interactive-HTML advanced feedback mode (no CLI code changes; server-side enforcement plus docs/skill updates).
+
+- **Revision briefs are prototype-only.** `GET`/`PUT …/revision-brief` on a `standard` HTML or Markdown version now returns `422 revision_requires_prototype` (enforced at the route, in the data layer, and in publish). Publishing with `--revision` must keep the new version `prototype` — an explicit `--review-profile standard` (or Markdown) is rejected without creating a version, touching `latest`, or mutating the brief.
+- **Positioning clarified everywhere**: this feature set is PreApp's *advanced feedback mode for interactive HTML*, not a repositioning — reports, documents, and HTML decks remain the primary flow.
+- **Scope**: the advanced mode officially supports **PC-first** review; the review UIs simulate mobile-form prototypes via content viewports (`390×844`, `768×1024`, `1280×800`). Native phone-side reviewing is planned separately.
+- Skill and docs updated accordingly (including the new error code in the CLI reference and API protocol docs).
+
 ## 0.4.0 — 2026-07-16
 
 HTML prototype review loop — publish interactive prototypes, collect element-level feedback, and pull the owner-curated revision brief.
