@@ -12,9 +12,7 @@ agent publish → 分享链接 → 人类反馈 → agent 读取反馈 → agent
 
 本仓库是 [preapp.app](https://preapp.app) 的 agent 集成层:`preapp` CLI、各 harness 的 agent skill(Claude Code / Codex / OpenClaw / Hermes)、协议文档,以及可直接发布的示例。托管服务本身不在本仓库。
 
-<video src="https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-case.mp4" poster="https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-poster.png" controls muted playsinline>
-  <a href="https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-case.mp4">▶ 观看演示（41 秒，无旁白）</a>
-</video>
+https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 
 > **一次真实跑通**：评阅者在具体的 HTML 状态上留下反馈，负责人整理成修改清单，agent 读取后在同一个链接上发布了新版本。**4 个版本 · 2 轮反馈闭环 · 6 条反馈 · 2 份已应用修改清单。**
 

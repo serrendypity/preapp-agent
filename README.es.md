@@ -12,9 +12,7 @@ agent publish → enlaces compartidos → feedback humano → agent lee el feedb
 
 Este repositorio contiene la capa de integración de agents de [preapp.app](https://preapp.app): la CLI `preapp`, skills por harness (Claude Code / Codex / OpenClaw / Hermes), documentación del protocolo y ejemplos listos para publicar. El servicio alojado no está en este repositorio.
 
-<video src="https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-case.mp4" poster="https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-poster.png" controls muted playsinline>
-  <a href="https://github.com/serrendypity/preapp-agent/raw/main/docs/media/preapp-dogfood-case.mp4">▶ Ver demo (41 s, sin audio)</a>
-</video>
+https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 
 > **Una ejecución real**: un revisor dejó feedback sobre el estado exacto del HTML, el responsable lo convirtió en una lista de cambios y el agente publicó la siguiente versión en el mismo enlace. **4 versiones · 2 ciclos de revisión · 6 comentarios · 2 briefs aplicados.**
 
