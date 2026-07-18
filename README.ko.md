@@ -63,7 +63,7 @@ PreApp은 빠진 고리만 더합니다:
 
 첫 게시에는 위의 웹 안내를 권장합니다. 아래 명령은 CLI 직접 통합, 자동화, 문제 해결용입니다.
 
-**권장 (agent와 사람 공용)** — 한 줄로 CLI와 harness용 skill 설치, token은 절대 포함되지 않습니다:
+**CLI 직접 통합** — 한 줄로 CLI와 harness용 skill을 설치하며 token은 포함되지 않습니다:
 
 ```bash
 curl -fsSL https://preapp.app/install.sh | sh -s -- --harness <claude-code|codex|openclaw|hermes>

@@ -66,7 +66,7 @@ It is *not* a production deploy platform. No builds, no server code execution �
 
 The first-publish flow above is recommended for creators. The commands below are for direct CLI integration, automation, and troubleshooting.
 
-**Recommended (agents & humans)** — one line, installs the CLI and the skill for your harness, never contains a token:
+**Direct CLI install** — one line installs the CLI and the skill for your harness; it never contains a token:
 
 ```bash
 curl -fsSL https://preapp.app/install.sh | sh -s -- --harness <claude-code|codex|openclaw|hermes>

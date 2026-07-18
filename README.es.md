@@ -63,7 +63,7 @@ PreApp añade exactamente el eslabón que falta:
 
 Para la primera publicación recomendamos el flujo web anterior. Los comandos siguientes son para integración directa de la CLI, automatización y diagnóstico.
 
-**Recomendada (agents y humanos)** — una línea instala la CLI y el skill de tu harness, nunca contiene un token:
+**Integración directa de la CLI** — una línea instala la CLI y el skill de tu harness; nunca contiene un token:
 
 ```bash
 curl -fsSL https://preapp.app/install.sh | sh -s -- --harness <claude-code|codex|openclaw|hermes>
