@@ -16,26 +16,22 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 
 > **실제 실행 1회**: 리뷰어가 특정 HTML 상태에 피드백을 남기고, 담당자가 수정 목록으로 정리했으며, agent가 이를 읽어 같은 링크에 다음 버전을 게시했습니다. **4개 버전 · 2회 리뷰 루프 · 6개 피드백 · 2개 적용된 brief.**
 
-## 30초 데모
+## 첫 게시
 
-```bash
-# 1. CLI + skill 설치 (이 명령에는 token이 없습니다 — 안전하게 전달 가능)
-curl -fsSL https://preapp.app/install.sh | sh -s -- --harness claude-code
+**터미널이 필요 없습니다.** Agent-first 안내를 따라 진행하세요.
 
-# 2. 자격 증명 1회 설정 (https://preapp.app/dashboard → Install에서 token 생성)
-preapp login <agent-token>
+1. [첫 콘텐츠 게시](https://preapp.app/login?intent=onboarding&utm_source=github&utm_campaign=readme)를 열고 Claude Code, Codex, OpenClaw, Hermes 중 하나를 선택합니다.
+2. 1단계 메시지 전체를 Agent에게 보냅니다. 설치가 끝나면 새 Skill을 불러오도록 Agent 세션을 한 번 다시 엽니다.
+3. 같은 페이지에서 access token을 만들고 2단계 메시지 전체를 새 Agent 세션에 보냅니다. token을 Issue, 스크린샷, 채팅에 붙이지 마세요.
+4. 3단계 게시 메시지를 보냅니다. Agent가 현재 HTML 또는 Markdown과 로컬 이미지·asset을 찾아 보기 링크와 피드백 링크를 따로 반환합니다.
 
-# 3. HTML 파일 또는 디렉터리 게시
-preapp publish ./dist --title "Q3 Strategy Review" --slug q3-strategy --format json
+피드백 링크를 실제 검토자에게 공유하세요. 피드백이 도착하면 Agent에게 다음과 같이 말합니다.
+
+```text
+PreApp 피드백을 읽고 먼저 각 feedback ID와 원문을 보여 주세요. 내가 사용할 항목을 고르기 전에는 파일을 수정하지 마세요.
 ```
 
-반환된 `feedbackLink`를 공유하면 누구나 가입 없이 피드백을 남길 수 있습니다(텍스트 선택·이미지 클릭으로 정확한 위치 지정). 그다음:
-
-```bash
-preapp feedback get q3-strategy --format markdown
-```
-
-Agent는 **Agent Feedback Brief** — 정확한 위치 지정자가 붙은 피드백 목록 — 를 받아 수정하고 v2를 게시합니다. **링크는 그대로**입니다.
+Agent는 정확한 위치 정보가 담긴 **Agent Feedback Brief**를 받고, 사용자의 결정을 기다린 뒤 **같은 링크**에 v2를 게시합니다.
 
 동봉된 예제로 바로 시도해 보세요:
 
@@ -64,6 +60,8 @@ PreApp은 빠진 고리만 더합니다:
 이것은 프로덕션 배포 플랫폼이 *아닙니다*. 빌드도, 서버 코드 실행도 없습니다 — 호스팅은 일부러 단순하게, 가치는 리뷰 루프에.
 
 ## 설치
+
+첫 게시에는 위의 웹 안내를 권장합니다. 아래 명령은 CLI 직접 통합, 자동화, 문제 해결용입니다.
 
 **권장 (agent와 사람 공용)** — 한 줄로 CLI와 harness용 skill 설치, token은 절대 포함되지 않습니다:
 

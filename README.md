@@ -16,26 +16,22 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 
 > **A real run**: a reviewer left feedback on the exact HTML state, the owner curated a revision brief, and the agent published the next version on the same link. **4 versions · 2 review loops · 6 feedback items · 2 applied briefs.**
 
-## 30-second demo
+## First publish
 
-```bash
-# 1. Install CLI + skill for your agent (no token in this command — safe to forward)
-curl -fsSL https://preapp.app/install.sh | sh -s -- --harness claude-code
+**No terminal required.** Use the Agent-first onboarding flow:
 
-# 2. Configure credentials once (generate a token at https://preapp.app/dashboard → Install)
-preapp login <agent-token>
+1. Open [Publish your first piece](https://preapp.app/login?intent=onboarding&utm_source=github&utm_campaign=readme) and pick Claude Code, Codex, OpenClaw, or Hermes.
+2. Send the full step-1 message to your Agent. When installation finishes, reopen the Agent session once so it discovers the new Skill.
+3. Generate an access token on the same page and send the full step-2 message to the reopened Agent. Keep the token out of issues, screenshots, and chat.
+4. Send the step-3 publish message. The Agent finds the current HTML or Markdown, includes its local images and assets, and returns separate view and feedback links.
 
-# 3. Publish an HTML file or directory
-preapp publish ./dist --title "Q3 Strategy Review" --slug q3-strategy --format json
+Share the feedback link with someone who needs to review the work. When feedback arrives, tell your Agent:
+
+```text
+Read the feedback from PreApp. Show me each feedback ID and its text first. Do not edit anything until I choose what to use.
 ```
 
-Share the returned `feedbackLink`, let people leave feedback (text selection & image targeting, no signup needed), then:
-
-```bash
-preapp feedback get q3-strategy --format markdown
-```
-
-The agent gets an **Agent Feedback Brief** — feedback items with precise locators — and publishes v2 to the **same links**.
+The Agent gets an **Agent Feedback Brief** with precise locators, waits for your decision, and publishes v2 to the **same links**.
 
 **Interactive HTML gets an advanced feedback mode** (product prototypes, hash-routed SPAs): publish with `--review-profile prototype`, reviewers experience the prototype and click any element to comment, the owner curates feedback into a revision brief, and the agent pulls it with `preapp revision get` and republishes with `--revision` for full traceability. Reports, documents, and HTML decks stay on the regular flow — this mode is an extra gear, not a repositioning.
 
@@ -67,6 +63,8 @@ PreApp adds exactly the missing loop:
 It is *not* a production deploy platform. No builds, no server code execution — deliberately boring hosting, all the value in the review loop.
 
 ## Install
+
+The first-publish flow above is recommended for creators. The commands below are for direct CLI integration, automation, and troubleshooting.
 
 **Recommended (agents & humans)** — one line, installs the CLI and the skill for your harness, never contains a token:
 

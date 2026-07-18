@@ -16,26 +16,22 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 
 > **Una ejecución real**: un revisor dejó feedback sobre el estado exacto del HTML, el responsable lo convirtió en una lista de cambios y el agente publicó la siguiente versión en el mismo enlace. **4 versiones · 2 ciclos de revisión · 6 comentarios · 2 briefs aplicados.**
 
-## Demo en 30 segundos
+## Primera publicación
 
-```bash
-# 1. Instala la CLI + skill para tu agent (sin token en el comando — seguro de reenviar)
-curl -fsSL https://preapp.app/install.sh | sh -s -- --harness claude-code
+**No necesitas abrir una terminal.** Sigue el onboarding Agent-first:
 
-# 2. Configura credenciales una vez (genera un token en https://preapp.app/dashboard → Install)
-preapp login <agent-token>
+1. Abre [Publica tu primer contenido](https://preapp.app/login?intent=onboarding&utm_source=github&utm_campaign=readme) y elige Claude Code, Codex, OpenClaw o Hermes.
+2. Envía al agent el mensaje completo del paso 1. Cuando termine la instalación, vuelve a abrir la sesión del agent una vez para que detecte el nuevo Skill.
+3. Genera un access token en la misma página y envía el mensaje completo del paso 2 a la nueva sesión. No pegues el token en Issues, capturas ni chats.
+4. Envía el mensaje de publicación del paso 3. El agent encuentra el HTML o Markdown actual, incluye sus imágenes y assets locales, y devuelve por separado los enlaces de lectura y feedback.
 
-# 3. Publica un archivo o directorio HTML
-preapp publish ./dist --title "Q3 Strategy Review" --slug q3-strategy --format json
+Comparte el enlace de feedback con alguien que de verdad necesite revisar el trabajo. Cuando llegue feedback, dile al agent:
+
+```text
+Lee el feedback de PreApp. Muéstrame primero cada feedback ID y su texto. No edites nada hasta que yo decida qué usar.
 ```
 
-Comparte el `feedbackLink` devuelto, deja que la gente dé feedback (selección de texto y clic en imágenes para ubicar con precisión, sin registro), y luego:
-
-```bash
-preapp feedback get q3-strategy --format markdown
-```
-
-El agent recibe un **Agent Feedback Brief** — una lista de feedback con localizadores precisos — y publica la v2 en **los mismos enlaces**.
+El agent recibe un **Agent Feedback Brief** con localizadores precisos, espera tu decisión y publica la v2 en **los mismos enlaces**.
 
 Pruébalo ahora mismo con los ejemplos incluidos:
 
@@ -64,6 +60,8 @@ PreApp añade exactamente el eslabón que falta:
 *No* es una plataforma de despliegue de producción. Sin builds, sin ejecución de código en el servidor — el hosting es deliberadamente aburrido; el valor está en el ciclo de revisión.
 
 ## Instalación
+
+Para la primera publicación recomendamos el flujo web anterior. Los comandos siguientes son para integración directa de la CLI, automatización y diagnóstico.
 
 **Recomendada (agents y humanos)** — una línea instala la CLI y el skill de tu harness, nunca contiene un token:
 
