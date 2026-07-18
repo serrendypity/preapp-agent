@@ -25,6 +25,8 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 3. Generate an access token on the same page and send the full step-2 message to the reopened Agent. Keep the token out of issues, screenshots, and chat.
 4. Send the step-3 publish message. The Agent finds the current HTML or Markdown, includes its local images and assets, and returns separate view and feedback links.
 
+**Stuck before the first link?** [Open a first-publish help request](https://github.com/serrendypity/preapp-agent/issues/new?template=first_publish_help.yml) with only your Agent, artifact format, and the step that stopped. Do not paste a token or private content.
+
 Share the feedback link with someone who needs to review the work. When feedback arrives, tell your Agent:
 
 ```text

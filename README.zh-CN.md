@@ -25,6 +25,8 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 3. 回到同一页面生成访问令牌，把第 2 步整段话发给重开的 Agent。Token 不要贴到 Issue、截图或聊天里。
 4. 把第 3 步整段话发给 Agent。它会找到当前 HTML 或 Markdown，带上本地图片和资源，返回独立的查看链接与反馈链接。
 
+**还没拿到第一个链接？** [提交首次发布求助](https://github.com/serrendypity/preapp-agent/issues/new?template=first_publish_help.yml)，只需选择 Agent、内容格式和卡住的步骤。不要粘贴 Token 或私有内容。
+
 把反馈链接发给真正需要看这份内容的人。收到反馈后，对 Agent 说：
 
 ```text

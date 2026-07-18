@@ -1,0 +1,58 @@
+name: First publish help
+description: Tell us your agent, artifact format, and where the first publish stopped.
+title: "[first publish] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when you have not received your first working PreApp view link.
+
+        This is a public issue. Do not paste an access token, private artifact content, client data, email address, or an unredacted screenshot. You do not need to upload the artifact.
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent
+      options:
+        - Claude Code
+        - Codex
+        - OpenClaw
+        - Hermes
+        - Cursor or another shell-capable agent
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: Artifact format
+      options:
+        - Single HTML file
+        - HTML directory with local images or assets
+        - Markdown file
+        - Not sure yet
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where did you stop?
+      options:
+        - I have not sent the step-1 install message to my Agent
+        - Installation finished, but I have not reopened the Agent session
+        - I reopened the Agent and generated a token
+        - The Agent tried to publish and returned an error
+        - The Agent returned a link, but it does not open correctly
+    validations:
+      required: true
+  - type: textarea
+    id: sanitized-detail
+    attributes:
+      label: Sanitized detail
+      description: Describe what happened or paste a short redacted error. Do not include your token, private content, local username, or full private path.
+      placeholder: The install finished in Codex, I reopened the session, and then...
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Public issue safety check
+      options:
+        - label: I removed tokens, private artifact content, client data, email addresses, and unredacted screenshots.
+          required: true

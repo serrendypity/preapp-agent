@@ -25,6 +25,8 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 3. Genera un access token en la misma página y envía el mensaje completo del paso 2 a la nueva sesión. No pegues el token en Issues, capturas ni chats.
 4. Envía el mensaje de publicación del paso 3. El agent encuentra el HTML o Markdown actual, incluye sus imágenes y assets locales, y devuelve por separado los enlaces de lectura y feedback.
 
+**¿Aún no tienes el primer enlace?** [Abre una solicitud de ayuda para la primera publicación](https://github.com/serrendypity/preapp-agent/issues/new?template=first_publish_help.yml) indicando solo el agent, el formato y el paso donde te detuviste. No pegues tokens ni contenido privado.
+
 Comparte el enlace de feedback con alguien que de verdad necesite revisar el trabajo. Cuando llegue feedback, dile al agent:
 
 ```text
