@@ -45,7 +45,7 @@ preapp publish examples/quarterly-report.html --title "Quarterly Report"
 preapp publish examples/market-analysis.md --title "Market Analysis"   # Markdown → Mermaid + math rendered server-side
 ```
 
-Using an existing artifact tool? See the tested recipe for sharing a multi-page [`claude-code-transcripts` HTML session](docs/recipes/claude-code-transcripts.md) without flattening its relative links or message anchors.
+Using an existing artifact tool? See the tested recipes for an [agent-generated HTML slide deck](docs/recipes/agent-html-decks.md) or a multi-page [`claude-code-transcripts` HTML session](docs/recipes/claude-code-transcripts.md). Both keep their relative files and navigation intact.
 
 ## Why PreApp
 
