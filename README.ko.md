@@ -25,6 +25,8 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 3. 같은 페이지에서 access token을 만들고 2단계 메시지 전체를 새 Agent 세션에 보냅니다. token을 Issue, 스크린샷, 채팅에 붙이지 마세요.
 4. 3단계 게시 메시지를 보냅니다. Agent가 현재 HTML 또는 Markdown과 로컬 이미지·asset을 찾아 보기 링크와 피드백 링크를 따로 반환합니다.
 
+**첫 링크를 아직 받지 못했나요?** [첫 게시 도움 요청](https://github.com/serrendypity/preapp-agent/issues/new?template=first_publish_help.yml)에서 Agent, 콘텐츠 형식, 멈춘 단계만 선택하세요. token이나 비공개 콘텐츠는 붙이지 마세요.
+
 피드백 링크를 실제 검토자에게 공유하세요. 피드백이 도착하면 Agent에게 다음과 같이 말합니다.
 
 ```text

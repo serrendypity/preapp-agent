@@ -25,6 +25,8 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 3. 同じページで access token を生成し、ステップ 2 のメッセージ全体を開き直した Agent に送ります。token を Issue、スクリーンショット、チャットに貼らないでください。
 4. ステップ 3 の publish メッセージを送ります。Agent が現在の HTML / Markdown とローカル画像・asset を見つけ、閲覧用とフィードバック用のリンクを別々に返します。
 
+**最初のリンクがまだ出ない場合**は、[初回 publish のヘルプリクエスト](https://github.com/serrendypity/preapp-agent/issues/new?template=first_publish_help.yml)で Agent、形式、止まったステップだけを選んでください。token や非公開の内容は貼らないでください。
+
 フィードバック用リンクを実際のレビュアーに共有します。フィードバックが届いたら、Agent に次のように伝えます。
 
 ```text
