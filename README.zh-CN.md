@@ -16,26 +16,22 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 
 > **一次真实跑通**：评阅者在具体的 HTML 状态上留下反馈，负责人整理成修改清单，agent 读取后在同一个链接上发布了新版本。**4 个版本 · 2 轮反馈闭环 · 6 条反馈 · 2 份已应用修改清单。**
 
-## 30 秒上手
+## 第一次发布
 
-```bash
-# 1. 为你的 agent 安装 CLI + skill(命令不含 token——可安全转发)
-curl -fsSL https://preapp.app/install.sh | sh -s -- --harness claude-code
+**不用打开终端。**直接走 Agent-first 引导：
 
-# 2. 配置一次凭证(到 https://preapp.app/dashboard → 安装页生成 token)
-preapp login <agent-token>
+1. 打开[发布第一份内容](https://preapp.app/login?intent=onboarding&utm_source=github&utm_campaign=readme)，选择 Claude Code、Codex、OpenClaw 或 Hermes。
+2. 把第 1 步整段话发给 Agent。安装完成后重开一次 Agent 会话，让新 Skill 生效。
+3. 回到同一页面生成访问令牌，把第 2 步整段话发给重开的 Agent。Token 不要贴到 Issue、截图或聊天里。
+4. 把第 3 步整段话发给 Agent。它会找到当前 HTML 或 Markdown，带上本地图片和资源，返回独立的查看链接与反馈链接。
 
-# 3. 发布一个 HTML 文件或目录
-preapp publish ./dist --title "Q3 Strategy Review" --slug q3-strategy --format json
+把反馈链接发给真正需要看这份内容的人。收到反馈后，对 Agent 说：
+
+```text
+读取这份 PreApp 内容的反馈。先把每条反馈的 ID 和原文给我看，在我决定采用哪些之前不要修改文件。
 ```
 
-把返回的 `feedbackLink` 发出去,让人直接在页面上留反馈(划选文字、点击图片精准定位,无需注册),然后:
-
-```bash
-preapp feedback get q3-strategy --format markdown
-```
-
-Agent 会拿到一份 **Agent Feedback Brief**——带精确定位的反馈清单——改完发布 v2,**链接不变**。
+Agent 会拿到带精确定位的 **Agent Feedback Brief**，等你决定后再修改，并在**同一组链接**上发布 v2。
 
 用仓库自带的示例立刻试一把:
 
@@ -65,6 +61,8 @@ PreApp 只补缺的那个环:
 它*不是*生产部署平台。不跑构建、不执行服务端代码——托管部分刻意平淡,价值全在评审闭环。
 
 ## 安装
+
+第一次发布推荐使用上面的网页引导。下面的命令用于直接集成 CLI、自动化和故障排查。
 
 **推荐(agent 与人通用)**——一条命令装好 CLI 和对应 harness 的 skill,永不包含 token:
 

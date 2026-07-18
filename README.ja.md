@@ -16,26 +16,22 @@ https://github.com/user-attachments/assets/472a0d85-259e-4e14-8b5b-7d66428b8e81
 
 > **実際の 1 回の実行**：レビュアーが具体的な HTML の状態にフィードバックを残し、オーナーが修正リストに整理、agent が読み取って同じリンクで次のバージョンを公開。**4 バージョン · 2 回のレビューループ · 6 件のフィードバック · 2 件の適用済み brief。**
 
-## 30 秒デモ
+## 最初の publish
 
-```bash
-# 1. CLI + skill をインストール(このコマンドに token は含まれない——安全に転送可能)
-curl -fsSL https://preapp.app/install.sh | sh -s -- --harness claude-code
+**ターミナルは不要です。**Agent-first の案内に沿って進めます。
 
-# 2. 認証情報を一度だけ設定(https://preapp.app/dashboard → Install で token を生成)
-preapp login <agent-token>
+1. [最初のコンテンツを publish](https://preapp.app/login?intent=onboarding&utm_source=github&utm_campaign=readme) を開き、Claude Code、Codex、OpenClaw、Hermes のいずれかを選びます。
+2. ステップ 1 のメッセージ全体を Agent に送ります。インストール完了後、新しい Skill を読み込むため Agent のセッションを一度開き直します。
+3. 同じページで access token を生成し、ステップ 2 のメッセージ全体を開き直した Agent に送ります。token を Issue、スクリーンショット、チャットに貼らないでください。
+4. ステップ 3 の publish メッセージを送ります。Agent が現在の HTML / Markdown とローカル画像・asset を見つけ、閲覧用とフィードバック用のリンクを別々に返します。
 
-# 3. HTML ファイルまたはディレクトリを publish
-preapp publish ./dist --title "Q3 Strategy Review" --slug q3-strategy --format json
+フィードバック用リンクを実際のレビュアーに共有します。フィードバックが届いたら、Agent に次のように伝えます。
+
+```text
+PreApp のフィードバックを読み、まず各 feedback ID と本文を見せてください。どれを使うか私が決めるまでファイルを変更しないでください。
 ```
 
-返ってきた `feedbackLink` を共有すれば、誰でも登録なしでフィードバックを残せます(テキスト選択・画像クリックで正確に位置指定)。その後:
-
-```bash
-preapp feedback get q3-strategy --format markdown
-```
-
-Agent は **Agent Feedback Brief**——正確なロケータ付きのフィードバック一覧——を受け取り、修正して v2 を publish。**リンクは変わりません**。
+Agent は正確なロケータ付きの **Agent Feedback Brief** を取得し、判断を待ってから、**同じリンク**に v2 を publish します。
 
 同梱のサンプルで今すぐ試せます:
 
@@ -64,6 +60,8 @@ PreApp は欠けている輪だけを足します:
 これは本番デプロイのプラットフォーム*ではありません*。ビルドもサーバーコード実行もなし——ホスティングは意図的に地味に、価値はレビューループに。
 
 ## インストール
+
+最初の publish には上の Web ガイドを推奨します。以下のコマンドは CLI の直接統合、自動化、トラブルシューティング向けです。
 
 **推奨(agent にも人にも)**——1 行で CLI と harness 用 skill をインストール、token は決して含まれません:
 
