@@ -63,7 +63,7 @@ PreApp は欠けている輪だけを足します:
 
 最初の publish には上の Web ガイドを推奨します。以下のコマンドは CLI の直接統合、自動化、トラブルシューティング向けです。
 
-**推奨(agent にも人にも)**——1 行で CLI と harness 用 skill をインストール、token は決して含まれません:
+**CLI を直接統合する場合**——1 行で CLI と harness 用 skill をインストールし、token は含まれません:
 
 ```bash
 curl -fsSL https://preapp.app/install.sh | sh -s -- --harness <claude-code|codex|openclaw|hermes>

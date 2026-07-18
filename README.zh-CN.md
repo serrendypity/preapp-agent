@@ -64,7 +64,7 @@ PreApp 只补缺的那个环:
 
 第一次发布推荐使用上面的网页引导。下面的命令用于直接集成 CLI、自动化和故障排查。
 
-**推荐(agent 与人通用)**——一条命令装好 CLI 和对应 harness 的 skill,永不包含 token:
+**直接集成 CLI**——一条命令装好 CLI 和对应 harness 的 skill，永不包含 token：
 
 ```bash
 curl -fsSL https://preapp.app/install.sh | sh -s -- --harness <claude-code|codex|openclaw|hermes>
