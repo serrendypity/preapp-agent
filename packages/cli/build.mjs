@@ -2,7 +2,9 @@
 // banner 注入：① shebang（放第一行）② createRequire —— 让被打包的 CJS 依赖（yazl）里的
 // require('fs') 能解析（esbuild 的 __require 助手会优先使用作用域内已定义的 require）。
 import { build } from "esbuild";
-import { chmodSync } from "node:fs";
+import { chmodSync, readFileSync } from "node:fs";
+
+const { version } = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
 
 await build({
   entryPoints: ["src/main.ts"],
@@ -11,6 +13,9 @@ await build({
   format: "esm",
   target: "node20",
   outfile: "dist/preapp.js",
+  define: {
+    __PREAPP_VERSION__: JSON.stringify(version),
+  },
   banner: {
     js: [
       "#!/usr/bin/env node",

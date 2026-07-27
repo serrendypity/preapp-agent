@@ -14,6 +14,7 @@ import type { ExitCode, Io } from "./io.js";
 import { runPublish } from "./publish.js";
 import { runFeedback } from "./feedback.js";
 import { runRevisionGet, runRevisionSave } from "./revision.js";
+import { getCliVersion } from "./version.js";
 
 type BaseIo = Omit<Io, "argv">;
 type CmdResult = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
@@ -193,8 +194,7 @@ export function buildMcpServer(base: BaseIo, version: string): McpServer {
 
 /** `preapp mcp`：stdio 上跑 MCP server，直到客户端断开（stdin 关闭）。 */
 export async function runMcp(io: Io): Promise<ExitCode> {
-  const { createRequire } = await import("node:module");
-  const { version } = createRequire(import.meta.url)("../package.json") as { version: string };
+  const version = await getCliVersion();
   const server = buildMcpServer(io, version);
   const transport = new StdioServerTransport();
   await server.connect(transport);

@@ -11,6 +11,7 @@ import { runRevisionGet, runRevisionSave } from "./revision.js";
 import { runLogin } from "./login.js";
 import { runSkillInstall } from "./skill.js";
 import { runMcp } from "./mcp.js";
+import { getCliVersion } from "./version.js";
 
 const HELP = `preapp — 把 agent 生成的内容分享给人看,收集反馈,再带回 agent
 
@@ -36,11 +37,7 @@ export async function run(argv: string[], io: Omit<Io, "argv">): Promise<ExitCod
     return 0;
   }
   if (cmd === "--version" || cmd === "-v") {
-    // 版本号单一来源 = package.json，不硬编码（bump 版本后 --version 自动跟随）。
-    // dev(tsx): src/main.ts → packages/cli/package.json；bundle: dist/preapp.js → 包根 package.json。
-    const { createRequire } = await import("node:module");
-    const { version } = createRequire(import.meta.url)("../package.json") as { version: string };
-    io.stdout(`preapp ${version}`);
+    io.stdout(`preapp ${await getCliVersion()}`);
     return 0;
   }
 
