@@ -4,7 +4,7 @@
 
 Please **do not** open a public issue for security problems.
 
-Email **security@preapp.app** with:
+Email **serren.dypity@gmail.com** with the subject prefix **[PreApp Security]** and:
 
 - a description of the issue and its impact,
 - reproduction steps or a proof of concept,
