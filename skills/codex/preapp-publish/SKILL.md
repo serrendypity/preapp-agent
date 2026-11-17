@@ -26,6 +26,13 @@ preapp publish <内容文件或目录> --title "标题" --slug <稳定slug如 q3
 - 同一 `--slug` 再发 = 新版本，分享链接**不变**。首次省略 `--slug` 生成随机 slug。
 - 返回 JSON，把 `viewLink`（给只看的人）和 `feedbackLink`（给要留反馈的人，可划选文字/点击图片精准定位）给用户。用 Chrome/Edge 打开。
 
+## HTML 游戏（游戏模式）
+
+用户要分享**可玩的 HTML 游戏**时加 `--mode game`：只给 `viewLink`。打开先显示名字/版本/作者和「进入游戏」按钮，进入后全屏、外层零遮挡（不挡游戏按键）；反馈默认关闭。
+```bash
+preapp publish ./game --title "贪吃蛇" --slug snake --mode game --format json
+```
+
 ## 产品原型（交互式 HTML 的高级反馈模式）
 
 这是 PreApp 对**交互式 HTML** 的高级反馈能力（报告/文档/HTML PPT 走上面的常规流程）。用户要发布**可交互的产品原型**（按钮/表单/hash 路由的 HTML/SPA，给用户或研发体验并反馈）时，加 `--review-profile prototype`：

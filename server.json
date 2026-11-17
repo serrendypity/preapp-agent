@@ -1,0 +1,47 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.serrendypity/preapp",
+  "title": "PreApp",
+  "description": "Publish HTML or Markdown for review and bring versioned human feedback back into your Agent.",
+  "websiteUrl": "https://preapp.app",
+  "repository": {
+    "url": "https://github.com/serrendypity/preapp-agent",
+    "source": "github",
+    "id": "1293338269",
+    "subfolder": "packages/cli"
+  },
+  "version": "0.5.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@preapp/cli",
+      "version": "0.5.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "PREAPP_TOKEN",
+          "description": "Agent Token created in PreApp onboarding. Keep it private.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "PREAPP_URL",
+          "description": "PreApp service URL.",
+          "value": "https://preapp.app",
+          "isRequired": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

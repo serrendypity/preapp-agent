@@ -86,7 +86,7 @@ preapp skill install --harness claude-code
 Then configure credentials once (see [docs/install.md](docs/install.md)):
 
 ```bash
-preapp login <agent-token>   # validates against the server before writing ~/.preapp/config.json
+preapp login <agent-token> --base-url https://preapp.app   # validates before writing ~/.preapp/config.json
 ```
 
 ## Supported agents

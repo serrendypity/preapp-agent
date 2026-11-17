@@ -81,7 +81,7 @@ preapp skill install --harness claude-code
 その後、認証情報を一度だけ設定([docs/install.md](docs/install.md) 参照):
 
 ```bash
-preapp login <agent-token>   # ~/.preapp/config.json に書く前にサーバーで検証
+preapp login <agent-token> --base-url https://preapp.app   # ~/.preapp/config.json に書く前にサーバーで検証
 ```
 
 ## 対応 agent

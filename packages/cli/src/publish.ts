@@ -67,6 +67,7 @@ function summarize(json: Record<string, unknown>): string[] {
     `  version:  ${String(json.versionLink)}`,
     `  pull:     ${String(json.feedbackCommand)}`,
   ];
+  if (json.displayMode === "game") lines.push("  mode:     game (view link opens fullscreen)");
   if (json.reviewProfile === "prototype") {
     lines.push("  profile:  prototype");
     if (json.ownerReviewLink) lines.push(`  review:   ${String(json.ownerReviewLink)}`);
@@ -140,6 +141,7 @@ export async function runPublish(io: Io): Promise<ExitCode> {
     ["feedback-mode", "feedbackMode"],
     // 原型审阅（prototype-prd §14.4/§15.1）：profile 与本轮修改清单关联
     ["review-profile", "reviewProfile"],
+    ["mode", "displayMode"],
     ["revision", "revisionBriefId"],
     ["revision-sequence", "revisionBriefEditSequence"],
   ];

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1 — 2026-11-17
+
+- Add `preapp publish --mode game` (MCP: `displayMode`) for HTML games: the view link shows the title, version and author with an Enter button, then runs the game fullscreen with no overlay. Feedback is off by default for games.
+- Add ownership metadata and a `server.json` release candidate for the Official MCP Registry. Publishing the npm package and publishing Registry metadata remain separate, confirmed actions.
+- Ship a focused npm README with the direct-install login command, including the required hosted `--base-url` when no install script has written it yet.
+- Keep the Registry package command on `preapp mcp`, with `PREAPP_TOKEN` treated as a secret and `PREAPP_URL` fixed to the hosted service by default.
+
 ## 0.5.0 — 2026-07-16
 
 **MCP server** — PreApp's fourth agent entry point (CLI / HTTP API / skill / MCP).

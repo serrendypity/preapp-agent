@@ -1,5 +1,5 @@
 import { execFileSync, spawn } from "node:child_process";
-import { mkdtempSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync } from "node:fs";
 import { cp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -8,7 +8,28 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist", "preapp.js");
-const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as { version: string };
+const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as {
+  version: string;
+  name: string;
+  mcpName: string;
+  files: string[];
+};
+const registryPath = [
+  join(root, "..", "..", "server.json"),
+  join(root, "..", "..", "public", "preapp-agent", "server.json"),
+].find((path) => existsSync(path));
+if (!registryPath) throw new Error("Official MCP Registry server.json not found");
+const registry = JSON.parse(readFileSync(registryPath, "utf8")) as {
+  name: string;
+  version: string;
+  packages: Array<{
+    identifier: string;
+    version: string;
+    packageArguments?: Array<{ type: string; value: string }>;
+    environmentVariables?: Array<{ name: string; isSecret?: boolean; value?: string }>;
+  }>;
+};
+const npmReadme = readFileSync(join(root, "README.md"), "utf8");
 let isolatedDir = "";
 let isolatedCli = "";
 
@@ -55,5 +76,28 @@ describe("standalone CLI bundle", () => {
     });
     expect(code).toBe(0);
     expect(stderr).toContain(`preapp mcp server ${pkg.version} ready`);
+  });
+
+  it("keeps npm and Official MCP Registry metadata aligned", () => {
+    expect(pkg.version).toBe("0.5.1");
+    expect(pkg.mcpName).toBe(registry.name);
+    expect(registry.version).toBe(pkg.version);
+    expect(pkg.files).toContain("README.md");
+
+    const npmPackage = registry.packages.find((entry) => entry.identifier === pkg.name);
+    expect(npmPackage?.version).toBe(pkg.version);
+    expect(npmPackage?.packageArguments).toContainEqual({ type: "positional", value: "mcp" });
+    expect(npmPackage?.environmentVariables).toContainEqual(
+      expect.objectContaining({ name: "PREAPP_TOKEN", isSecret: true }),
+    );
+    expect(npmPackage?.environmentVariables).toContainEqual(
+      expect.objectContaining({ name: "PREAPP_URL", value: "https://preapp.app" }),
+    );
+  });
+
+  it("ships an npm README with a working direct-login path", () => {
+    expect(npmReadme).toContain("preapp login <agent-token> --base-url https://preapp.app");
+    expect(npmReadme).toContain("preapp mcp");
+    expect(npmReadme).not.toMatch(/pa_live_[A-Za-z0-9_-]{20,}/);
   });
 });

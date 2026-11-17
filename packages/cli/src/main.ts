@@ -19,6 +19,7 @@ usage:
   preapp publish <file-or-dir> [--title ...] [--slug <id-or-slug>] [--entry index.html|report.md]
                                [--description ...] [--change-note ...] [--anchors anchors.json]
                                [--feedback-mode off|detailed] [--review-profile standard|prototype]
+                               [--mode standard|game]
                                [--revision <rbr_id> --revision-sequence <n>] [--format json|text]
   preapp feedback get <share-url | version-url | content-id-or-slug> [--version N] [--format markdown|json]
   preapp revision get <share-url | content-id-or-slug> [--version N] [--format markdown|json]

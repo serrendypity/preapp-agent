@@ -78,6 +78,12 @@ export function buildMcpServer(base: BaseIo, version: string): McpServer {
           .describe(
             "prototype = advanced feedback mode for interactive HTML (element-level feedback + revision briefs); HTML versions inherit the previous profile when omitted",
           ),
+        displayMode: z
+          .enum(["standard", "game"])
+          .optional()
+          .describe(
+            "game = HTML game: the view link shows title/version/author with an Enter button, then runs fullscreen with no overlay; share the view link only",
+          ),
         revisionBriefId: z
           .string()
           .optional()
@@ -98,6 +104,7 @@ export function buildMcpServer(base: BaseIo, version: string): McpServer {
       push(argv, "--change-note", a.changeNote);
       push(argv, "--feedback-mode", a.feedbackMode);
       push(argv, "--review-profile", a.reviewProfile);
+      push(argv, "--mode", a.displayMode);
       push(argv, "--revision", a.revisionBriefId);
       push(argv, "--revision-sequence", a.revisionBriefEditSequence);
       return exec(base, runPublish, argv);

@@ -82,7 +82,7 @@ preapp skill install --harness claude-code
 然后配置一次凭证(详见 [docs/install.md](docs/install.md)):
 
 ```bash
-preapp login <agent-token>   # 写入 ~/.preapp/config.json 前会先向服务端校验
+preapp login <agent-token> --base-url https://preapp.app   # 写入 ~/.preapp/config.json 前会先向服务端校验
 ```
 
 ## 支持的 agent

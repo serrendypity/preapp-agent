@@ -15,6 +15,7 @@ const VALUE_FLAGS = new Set([
   "anchors",
   "feedback-mode",
   "review-profile",
+  "mode",
   "revision",
   "revision-sequence",
   "file",

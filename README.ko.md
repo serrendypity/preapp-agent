@@ -81,7 +81,7 @@ preapp skill install --harness claude-code
 그다음 자격 증명을 1회 설정합니다([docs/install.md](docs/install.md) 참고):
 
 ```bash
-preapp login <agent-token>   # ~/.preapp/config.json에 쓰기 전에 서버로 검증
+preapp login <agent-token> --base-url https://preapp.app   # ~/.preapp/config.json에 쓰기 전에 서버로 검증
 ```
 
 ## 지원 agent
